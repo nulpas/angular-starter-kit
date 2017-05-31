@@ -7,8 +7,6 @@
     //# External Modules
     //# App Modules
     'app.templateCache',
-    'app._core',
-    'app._shared',
     'app.layout',
     'app.login'
   ]);
