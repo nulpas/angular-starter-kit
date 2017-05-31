@@ -1,11 +1,11 @@
 {
   "name": "angular-starter-kit",
   "description": "Application Frontend seed",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/nulpas/angular-stater-kit.git"
   },
   "author": "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)",
   "contributors": [
@@ -14,10 +14,10 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "npm prune && bower install && bower prune"
+    "postinstall": "bower install && bower prune"
   },
   "dependencies": {
-    "gulp-starter-kit": "https://github.com/nulpas/gulp-starter-kit.git"
+    "pollas": "https://github.com/nulpas/gulp-starter-kit.git#0.7.0"
   },
   "devDependencies": {},
   "false": {}

@@ -1,11 +1,11 @@
 {
   "name": "bca-ims-frontend",
   "description": "Application Frontend seed.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "https://bims-dev.northeurope.cloudapp.azure.com",
   "repository": {
     "type": "git",
-    "url": "ssh://git@hd-2k8-ss02:7999/bcaim/web.git"
+    "url": "https://github.com/nulpas/angular-stater-kit.git"
   },
   "authors": [
     "Luis Murciano <luis.murciano.renedo@everis.com> (http://hd-2k8-ss02:7990/users/lmurcian)",
