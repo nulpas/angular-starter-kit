@@ -1,0 +1,48 @@
+<div
+  data-ng-if="packageDetails.dataOriginEntity"
+  data-details-view="packageDetails.dataOriginEntity"
+  data-entity="'packages'"
+  data-contract="packageDetails.entityContract"
+  data-config="packageDetails.dataStructureName"
+  data-config-name="packageDetails.configName + 'DetailsView'">
+</div>
+
+<dialog id="sell-package-confirmation-dialog" class="mdl-dialog">
+  <form
+    id="sell-package-confirmation-form"
+    name="sell-package-confirmation-form"
+    data-ng-submit="packageDetails.sellPackage('#sell-package-confirmation-dialog')">
+    <div class="mdl-dialog__content">
+      <span>Do you really want to sell this package?</span>
+    </div>
+    <div class="mdl-dialog__actions">
+      <button type="submit" class="mdl-button">Confirm</button>
+      <button
+        type="button"
+        class="mdl-button close"
+        data-ng-click="packageDetails.closeDialog('#sell-package-confirmation-dialog')">
+        Cancel
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="cancel-package-confirmation-dialog" class="mdl-dialog">
+  <form
+    id="cancel-package-confirmation-form"
+    name="publish-confirmation-form"
+    data-ng-submit="packageDetails.cancelPackage('#cancel-package-confirmation-dialog')">
+    <div class="mdl-dialog__content">
+      <span>Do you really want to cancel this package?</span>
+    </div>
+    <div class="mdl-dialog__actions">
+      <button type="submit" class="mdl-button">Confirm</button>
+      <button
+        type="button"
+        class="mdl-button close"
+        data-ng-click="packageDetails.closeDialog('#cancel-package-confirmation-dialog')">
+        Cancel
+      </button>
+    </div>
+  </form>
+</dialog>

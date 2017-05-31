@@ -1,0 +1,55 @@
+<!-- Advanced enum filter -->
+<i class="mdl-chip-advanced-search-close material-icons "
+   data-ng-if="!enumFilter.data.searchable.standard"
+   data-ng-click="enumFilter.removeNonStandardField()">cancel</i>
+<div class="md-primary mdl-card-adv-search mdl-shadow--2dp">
+  <div class="mdl-card-adv-search__title" data-ng-class="{'cardDragHandler md-primary': true}"
+       data-ng-click="enumFilter.collapsed=!enumFilter.collapsed">
+    <div class="filter-title">
+      <i class="mdl-card-adv-search__avatar material-icons">assignment</i>
+      <span class="mdl-card-adv-search__title-text">{{::enumFilter.data.title}}</span>
+    </div>
+    <span
+      data-ng-if="enumFilter.selectedOptions.length > 0"
+      class="mdl-chip mdl-chip--deletable mdl-chip-advanced-search">
+      <span class="mdl-chip__text"><strong>{{enumFilter.selectedOptionsTitle}}</strong></span>
+      <button type="button" class="mdl-chip__action" data-ng-click="enumFilter.fastRemoveFilter()">
+        <i class="material-icons">cancel</i>
+      </button>
+    </span>
+  </div>
+  <div
+    class="md-inline-form slide"
+    data-ng-hide="enumFilter.collapsed">
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+      <label class="mdl-button mdl-js-button mdl-button--icon" for="enum-search-{{enumFilter.data.name}}">
+        <i class="material-icons">search</i>
+      </label>
+      <div class="mdl-textfield__expandable-holder">
+        <input class="mdl-textfield__input" type="text" id="enum-search-{{enumFilter.data.name}}"
+               data-ng-model="enumFilter.searchEnum">
+        <label class="mdl-textfield__label" for="enum-search-{{enumFilter.data.name}}">Search Enum</label>
+      </div>
+    </div>
+    <ul class="demo-list-control mdl-list">
+      <li class="mdl-list__item checkbox-item" data-ng-repeat="value in enumFilter.enumArray| filter:enumFilter.searchEnum">
+        <span class="mdl-list__item-secondary-action">
+          <label
+            class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+            data-ng-class="{'is-checked' : enumFilter.selectedOptions[value]}"
+            for="adv-search-ckb-{{::enumFilter.data.title}}-{{::value}}">
+            <input
+              type="checkbox"
+              id="adv-search-ckb-{{::enumFilter.data.title}}-{{::value}}"
+              class="mdl-checkbox__input"
+              data-ng-model="enumFilter.selectedOptions[value]"
+              data-ng-click="enumFilter.handleOption(enumFilter.data, value)">
+            <span class="mdl-checkbox__label">
+              {{::value}}
+            </span>
+          </label>
+        </span>
+      </li>
+    </ul>
+  </div>
+</div>

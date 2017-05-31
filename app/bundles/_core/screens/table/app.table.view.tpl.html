@@ -1,0 +1,39 @@
+<div class="bca-table__tools-container">
+  <div>
+    <bca-counter
+      type="loaded"
+      visible="true"
+      actual-count="table.screen._cursor.totalResult"
+      max-count="table.screen._cursor.totalFiltered"
+      text="'results.'">
+    </bca-counter>
+
+    <bca-counter
+      type="selected"
+      visible="table.selectedEntities.getList(table.screen.uniqueName).length"
+      actual-count="table.selectedEntities.getList(table.screen.uniqueName).length"
+      max-count="table.screen._cursor.totalFiltered"
+      text="'items selected.'">
+    </bca-counter>
+  </div>
+
+  <div>
+    <bca-search-input></bca-search-input>
+    <bca-toggle-icon
+      button-icon="select_all"
+      unique-name="table.screen.uniqueName"
+      on-click="table.activeSelectable(checked)"
+      checked="table.activeSelectableModelObject.checked"
+      text="table.activeSelectableModelObject.text"
+      disabled="false">
+    </bca-toggle-icon>
+  </div>
+</div>
+
+<bca-table-container
+  id="{{table.screen.uniqueName}}"
+  class="bca-table__container"
+  ng-class="{'not-selectable': !table.activeSelectableModelObject.checked}"
+  promise-data="table.screenPromise"
+  active="table.activeSelectableModelObject.checked">
+</bca-table-container>

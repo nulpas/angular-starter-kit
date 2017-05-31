@@ -1,0 +1,35 @@
+<!-- Advanced search text filter -->
+<i class="mdl-chip-advanced-search-close material-icons "
+   data-ng-if="!data.searchable.standard"
+   data-ng-click="textFilter.removeNonStandardField(data)">cancel</i>
+<div
+  class="md-primary mdl-card-adv-search mdl-shadow--2dp">
+  <div
+    class="mdl-card-adv-search__title"
+    data-ng-class="{'cardDragHandler md-primary': true}"
+    data-ng-click="textFilter.collapsed = !textFilter.collapsed">
+    <div class="filter-title">
+      <i class="mdl-card-adv-search__avatar material-icons">assignment</i>
+      <span class="mdl-card-adv-search__title-text">{{::data.title}}</span>
+    </div>
+    <span data-ng-if="textFilter.finalSelectedValue" class="mdl-chip mdl-chip--deletable mdl-chip-advanced-search">
+      <span class="mdl-chip__text"><strong>{{textFilter.finalSelectedValue}}</strong></span>
+      <button type="button" class="mdl-chip__action" data-ng-click="textFilter.fastRemoveFilter()">
+        <i class="material-icons">cancel</i>
+      </button>
+    </span>
+
+  </div>
+  <div
+    class="md-inline-form slide"
+    data-ng-hide="textFilter.collapsed">
+      <div class="adv-search-textfield">
+        <input
+          id = "{{data.name}}"
+          class="mdl-textfield__input adv-search"
+          data-ng-model="textFilter.selectedValue"
+          type="text"
+          data-ng-blur="textFilter.handleFilter(data)">
+      </div>
+  </div>
+</div>

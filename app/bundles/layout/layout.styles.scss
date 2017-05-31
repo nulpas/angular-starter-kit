@@ -1,0 +1,162 @@
+//# IMPORTS ##########################################
+@import "../../app.mixins";
+@import "../../app.variables";
+
+//# Layout variables
+@import "layout.variables";
+
+.main-header {
+  background: url($im-header-background) no-repeat right center;
+}
+.page-content {
+  height: 100%;
+}
+.mdl-layout__drawer-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .material-icons {
+    margin: 0;
+  }
+}
+
+.mdl-layout__header-row {
+  .mdl-navigation {
+    text-transform: uppercase;
+    .mdl-menu__item a {
+      color: rgba(0, 0, 0, 0.8);
+      text-decoration: none;
+    }
+  }
+  .breadcrumb > #breadcrumb-url{
+      font-size: 1.1em;
+      color: rgba(255,255,255,0.8);
+      margin-right: 20px;
+      align-self: center;
+  }
+  .header__logo {
+    max-height: 50px;
+    max-width: 106px;
+  }
+
+  .mdl-navigation__link.sub-items {
+    padding-right: 5px;
+  }
+
+  .sub-menu-option {
+    display: inline-block;
+  }
+  .sub-menu-option.right {
+    float: right;
+  }
+}
+
+BODY * {
+  outline: 0 !important;
+}
+
+MAIN#app-main {
+  background-color: $cl-contentBackgroundColor;
+  overflow-y: visible;
+  height: 100%;
+
+  #advanced-search {
+    z-index: 1000;
+    position: fixed;
+    top: 99px;
+    height: calc(100% - 99px);
+    width: 100%;
+    overflow: auto;
+    &.ng-hide-remove {
+      @include animation(slideInDown 0.8s);
+    }
+    &.ng-hide-add {
+      @include animation(slideOutUp 0.8s);
+    }
+  }
+}
+
+#version-info {
+  position: relative;
+  cursor: pointer;
+  margin: 0 20px;
+  .version-info__container {
+    position: absolute;
+    z-index: 10;
+    flex: 1;
+    right: -80px;
+    top: 30px;
+    cursor: default;
+    UL {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      margin: 0 20px;
+      padding: 5px;
+      background-color: #d7e3c3;
+      border: 2px solid #7e8572;
+      border-radius: 5px;
+      list-style: none;
+      LI {
+        color: black;
+        justify-content: space-between;
+        font-size: 0.8em;
+        display: inherit;
+        .version-info__label {
+          font-weight: bolder;
+          margin-right: 10px;
+        }
+      }
+    }
+    &.ng-enter {
+      transition: 0.5s linear all;
+      opacity: 0;
+      &.ng-enter-active {
+        opacity: 1;
+      }
+    }
+    &.ng-leave {
+      transition:0.5s linear all;
+      opacity: 1;
+      &.ng-leave-active {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+.profile-div {
+  position: relative;
+}
+
+A {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+.md-icon-button {
+  background-color: transparent !important;
+}
+
+//# Styles for selection tools
+.select-helper {
+  position: absolute;
+  opacity: 0.2;
+  background: #00a000;
+  z-index: 1;
+}
+
+.selected {
+  background-color: rgba(#00a000, 0.5) !important;
+}
+.selecting {
+  background-color: #e6e6e6 !important;
+}
+
+.selection-layer {
+  position: absolute;
+}

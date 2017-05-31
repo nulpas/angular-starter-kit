@@ -1,0 +1,21 @@
+{
+    "result": {
+        "saleevents": {
+            "saleType": {
+                "Tender sale": {
+                    "conditionalFields": {
+                        "xBid": {
+                            "selectionCriteria": {
+                                "required": false
+                            },
+                            "interval": {
+                                "required": false
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

@@ -1,0 +1,15 @@
+<div data-ng-repeat="sections in file.screen.view.data.sections" style="background-color: #00a000;">
+  SECTION
+  <div data-ng-repeat="card in sections.cards" style="background-color: #7b1fa2;">
+    - CARD
+    <div data-ng-if="card.type === 'form'" style="background-color: #ffffff;">
+      - - FORM
+      <div data-ng-repeat="field in card.fields track by field">
+        <span data-bca-auto-form="file.screen" data-bca-form-group="card" data-bca-form-element="field"></span>
+      </div>
+    </div>
+    <div data-ng-if="card.type === 'log'" style="background-color: #bf360c;">
+      - - TABLE LIST
+    </div>
+  </div>
+</div>

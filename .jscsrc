@@ -1,0 +1,17 @@
+{
+  "maxErrors": null,
+  "preset": "google",
+  "validateIndentation": 2,
+  "requireCommaBeforeLineBreak": true,
+  "requireBlocksOnNewline": {
+    "includeComments": true,
+    "minLines": 1
+  },
+  "requireAlignedMultilineParams": true,
+  "maximumLineLength": 120,
+  "disallowSpacesInsideObjectBrackets": null,
+  "requireSpacesInsideObjectBrackets": "all",
+  "jsDoc": {
+    "checkAnnotations": "jsdoc3"
+  }
+}

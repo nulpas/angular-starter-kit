@@ -1,0 +1,48 @@
+{
+  "name": "bca-ims-frontend",
+  "description": "Application Frontend seed.",
+  "version": "0.3.0",
+  "homepage": "https://bims-dev.northeurope.cloudapp.azure.com",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@hd-2k8-ss02:7999/bcaim/web.git"
+  },
+  "authors": [
+    "Luis Murciano <luis.murciano.renedo@everis.com> (http://hd-2k8-ss02:7990/users/lmurcian)",
+    "Nul Pàs <manuel.pastor.lendinez.sa@everis.com> (http://hd-2k8-ss02:7990/users/mpastorl)"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular-starter-kit-core": "https://github.com/nulpas/angular-starter-kit-common.git"
+  },
+  "devDependencies": {},
+  "resolutions": {
+    "angular": "^1.5.8"
+  },
+  "overrides": {
+    "material-design-lite": {
+      "main": [
+        "material.js",
+        "material.css"
+      ]
+    },
+    "dragular": {
+      "main": [
+        "dist/dragular.js",
+        "dist/dragular.css"
+      ]
+    },
+    "adm-dtp": {
+      "main": [
+        "dist/ADM-dateTimePicker.js",
+        "dist/ADM-dateTimePicker.css"
+      ]
+    }
+  }
+}

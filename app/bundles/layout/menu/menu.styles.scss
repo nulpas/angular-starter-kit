@@ -1,0 +1,118 @@
+@import "../../../_app.variables";
+@import "../../../_app.mixins";
+
+.mdl-menu {
+  clip: auto !important;
+}
+.mdl-menu__item {
+  overflow: visible;
+}
+.mdl-navigation .bims-menu >  div.mdl-navigation__link {
+  @include layout-row;
+  @include layout-align-space-between;
+  @include transition(all 0.3s ease-out);
+  opacity: 1;
+
+  .mdl-layout-title {
+    line-height: 85px;
+  }
+}
+.mdl-layout__drawer .mdl-navigation .mdl-navigation__link:hover {
+  background-color: initial;
+}
+.bims-main-menu{
+  z-index: 99;
+  cursor: pointer;
+  .slide {
+    position: absolute;
+    background-color: grey;
+    .slide {
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.44);
+    }
+  }
+  .enabled-menu-item {
+    text-decoration: none;
+    align-self: center;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mdl-navigation .bims-menu > div.mdl-navigation__link {
+    display: block;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  .mdl-navigation {
+    padding-top: 0;
+    .mdl-navigation__link {
+      padding: 0 18px;
+      padding-right: 14px;
+      SPAN{
+        color: rgba(255, 255, 255, 0.8);
+      }
+    }
+  }
+  .mdl-navigation .bims-menu .bims-menu {
+    background-color: rgba(255, 255, 255, 0.3);
+  }
+  .bottom-shadow {
+    box-shadow: 0 3px 2px rgba(255, 255, 255, 0.3);
+    -moz-box-shadow: 0 3px 2px rgba(255, 255, 255, 0.3);
+    -webkit-box-shadow: 0 3px 2px rgba(255, 255, 255, 0.3);
+  }
+}
+.bims-sidenav{
+  overflow: overlay;
+  background-color: white;
+
+  .mdl-layout-title {
+    background: url('/images/header/header-stroke.png') no-repeat right center;
+    background-color: black;
+    color: white;
+  }
+
+   &::-webkit-scrollbar {
+     width: 0.5em;
+   }
+
+   &::-webkit-scrollbar-thumb {
+     background-color: darkgrey;
+     border-radius: 5px;
+   }
+   .bims-menu {
+     cursor: pointer;
+
+     &:first-child{
+       border-top: 1px solid rgba(0, 0, 0, 0.2);
+     }
+   }
+
+  .mdl-navigation {
+    .mdl-navigation__link {
+      cursor: pointer;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      padding-left: 30px;
+      SPAN{
+        color: rgba(0, 0, 0, 0.8);
+      }
+    }
+    padding-top: 0;
+  }
+  .mdl-navigation .bims-menu .bims-menu {
+    background-color: rgba(0, 0, 0, 0.075);
+  }
+  .bottom-shadow {
+    box-shadow-bottom: 0px 3px 2px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 3px 2px rgba(0, 0, 0, 0.3);
+  }
+
+  .brand-label {
+    font-size: 12px;
+  }
+}

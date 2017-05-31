@@ -1,0 +1,50 @@
+<!-- Standard vehicles view -->
+<div data-layout="column" data-layout-align="center">
+  <div class="content">
+    <div
+      data-list-view="vehicles.viewConfig.data"
+      data-config-name="vehicles.configName + 'ListView'"
+      data-load="vehicles.loadList"
+      data-bpmn="vehicles.bpmn"
+      data-scroll-container="'app-main'"
+      data-control-list=""
+      data-control="vehicles.viewConfig.focusInList"
+      data-draggable="vehicles.viewConfig.draggable"
+      class="list background-view-list"
+      data-entity="vehicles.entity"
+      data-ng-if="vehicles.viewConfig.type === vehicles._shared.LIST_VIEW">
+    </div>
+    <div
+      data-grid-view="vehicles.viewConfig.data"
+      data-load="vehicles.loadList"
+      data-scroll-container="'app-main'"
+      data-control-grid=""
+      data-control="vehicles.viewConfig.focusInGrid"
+      data-config-name="vehicles.configName + 'GridView'"
+      class="list background-view-grid"
+      data-entity="vehicles.entity"
+      data-ng-if="vehicles.viewConfig.type === vehicles._shared.GRID_VIEW">
+    </div>
+    <div
+      data-mini-grid-view="vehicles.viewConfig.data"
+      data-load="vehicles.loadList"
+      data-scroll-container="'app-main'"
+      data-control-mini-grid=""
+      data-control="vehicles.viewConfig.focusInMiniGrid"
+      data-config-name="vehicles.configName + 'MiniGridView'"
+      class="list background-view-minigrid"
+      data-entity="vehicles.entity"
+      data-ng-if="vehicles.viewConfig.type === vehicles._shared.GRID_MINI_VIEW">
+    </div>
+    <div
+      data-simple-list-view="vehicles.viewConfig.data"
+      data-load="vehicles.loadList"
+      data-scroll-container="'app-main'"
+      data-control-simple-list=""
+      data-control="vehicles.viewConfig.focusInSimpleList"
+      data-config-name="vehicles.configName + 'SimpleListView'"
+      data-entity="vehicles.entity"
+      data-ng-if="vehicles.viewConfig.type === vehicles._shared.SIMPLE_LIST_VIEW">
+    </div>
+  </div>
+</div>

@@ -1,0 +1,14 @@
+<span>{{partnerSelector.partner.name}}</span>
+<button id="partner"
+        class="mdl-button mdl-js-button mdl-button--icon">
+  <i class="material-icons">more_vert</i>
+</button>
+
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="partner">
+  <li
+    data-ng-repeat="partner in partnerSelector.partners"
+    class="mdl-menu__item"
+    data-ng-click="partnerSelector.partner = partner; partnerSelector.dataLoad(partner);">
+    {{partner.name}}
+  </li>
+</ul>

@@ -1,0 +1,24 @@
+<!-- # TOTAL RESULTS -->
+<div class="editable-field-wrapper">
+  <button
+    class="mdl-button mdl-js-button editable-field-button changing-type"
+    data-ng-click="editableField.isEditing = !editableField.isEditing"
+    data-ng-if="editableField.field.editable && !editableField.isEditing">
+    {{editableField.fieldModel}}
+  </button>
+  <span class="editable-field-textfield mdl-textfield mdl-js-textfield" data-ng-if="editableField.field.editable && editableField.isEditing">
+    <form
+    data-ng-submit="editableField.saveData(editableField.rowField, field, editableField.fieldModel);">
+      <input
+        tabindex="1"
+        data-ng-if="editableField.field.editable && editableField.isEditing"
+        data-ng-init="editableField.setEvents('#' + editableField.fieldId)"
+        data-ng-model="editableField.fieldModel"
+        id="{{editableField.fieldId}}"
+        class="mdl-textfield__input changing-type"
+        pattern="{{editableField.getPattern(field.format)}}"
+        type="text"
+        data-ng-blur="editableField.saveData(editableField.rowField, editableField.field, editableField.fieldModel);">
+    </form>
+  </span>
+</div>

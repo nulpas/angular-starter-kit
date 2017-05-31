@@ -1,0 +1,51 @@
+@import "../../../../_app.mixins";
+
+.eligibility-rules-configuration-view-wrapper {
+  padding: 10px;
+
+  .mdl-card {
+    width: 100%;
+    min-height: 0 !important;
+
+    .mdl-checkbox {
+      margin-top: 10px;
+    }
+
+    .mdl-card__title {
+      background-color: rgba(0, 43, 121, 0.75);
+      color: white;
+      line-height: 32px;
+      font-size: larger;
+
+      .mdl-card__avatar{
+        background-color: rgba(0,0,0,0.2);
+        font-size: 20px;
+        padding: 6px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+    }
+
+    .mdl-card__actions {
+      display: flex;
+    }
+  }
+
+  .layout-column {
+    flex-direction: column;
+    display: flex;
+  }
+
+  .layout-row {
+    flex-flow: row wrap;
+    display: flex;
+  }
+
+  .slide.ng-enter {
+    @include animation(slideInDown .4s);
+  }
+
+  .slide.ng-leave {
+    @include animation(slideOutUp .4s);
+  }
+}

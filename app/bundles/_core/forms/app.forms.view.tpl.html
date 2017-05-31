@@ -1,0 +1,22 @@
+<div>
+  - - - {{f.bcaFormElement}} - {{f.logicMandatory}} - {{f.element.type}} - {{f.element.format}}
+  <input
+    type="{{f.element.formType}}"
+    data-ng-if="f.element.type === f.$.INPUT"
+    data-ng-required="f.element.isMandatory || f.logicMandatory">
+  <span
+    data-ng-if="f.element.type === f.$.ENUM" data-bca-auto-complete="f.element" data-bca-id="f.bcaId"></span>
+  <div
+    data-ng-if="f.element.logic"
+    data-ng-repeat="(valueKey, value) in f.element.logic track by valueKey"
+    id="{{f.element.label}}_{{valueKey.split(' ').join('_')}}">
+    <div data-ng-repeat="field in value.visible track by field">
+      <span
+        data-bca-auto-form="f.bcaAutoForm"
+        data-bca-form-group="f.bcaFormGroup"
+        data-bca-form-element="field"
+        data-bca-logic-mandatory="value.mandatory"
+        data-bca-id="f.element.label + '_' + valueKey.split(' ').join('_')"></span>
+    </div>
+  </div>
+</div>

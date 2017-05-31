@@ -1,0 +1,70 @@
+<div class=" mdl-grid eligibility-rules-configuration-view-wrapper">
+  <div class="mdl-layout-spacer"></div>
+
+  <div
+    data-partner-selector
+    data-data-load="configuration.dataLoad"
+    data-ng-if="configuration.isBcaAdmin && !configuration.partner" style="position: relative">
+  </div>
+
+  <div
+    class="mdl-cell mdl-cell--{{configuration.configStructure.numberOfColumns * 2}}-col"
+    data-ng-if="configuration.availableFields">
+    <div class="mdl-card mdl-shadow--2dp">
+      <div
+        class="mdl-card__title mdl-card--border"
+        data-ng-init="collapsed = false"
+        data-ng-dblclick="collapsed = !collapsed">
+        <i class="mdl-card__avatar material-icons ng-binding">{{configuration.configStructure.icon}}</i>
+        <h2 class="mdl-card__title-text">{{::layout.translations[configuration.configStructure.title] || configuration.configStructure.title}}</h2>
+      </div>
+      <div class="slide" data-ng-hide="collapsed">
+        <div class="mdl-card__supporting-text">
+          <form>
+            <div
+              data-ng-if="configuration.configStructure.type === 'checkbox' &&
+                !configuration.configStructure.format"
+              class="layout-{{configuration.configStructure.layoutDirection}}">
+              <label
+                data-ng-cloak
+                data-ng-repeat="field in configuration.availableFields.fields"
+                for="field--checkbox--{{$index}}"
+                class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                data-ng-class="{'is-checked' : configuration.selectedOptions[field]}"
+                data-ng-style="{'flex' : '1 0' + 100 / configuration.configStructure.numberOfColumns +'%'}">
+                <input
+                  id="field--checkbox--{{$index}}"
+                  type="checkbox"
+                  class="mdl-checkbox__input"
+                  data-ng-model="configuration.selectedOptions[field]">
+                <span class="mdl-checkbox__label">{{::layout.translations[field] || field}}</span>
+              </label>
+            </div>
+            <div
+              data-ng-if="configuration.configStructure.type === 'checkbox' &&
+                configuration.configStructure.format &&
+                configuration.configStructure.format === 'radioOptions'"
+              class="layout-{{configuration.configStructure.layoutDirection}}">
+              <label
+                data-ng-cloak
+                data-ng-repeat="field in configuration.availableFields.fields"
+                data-ng-click="configuration.updateSelection(field)"
+                for="field--unique-checkbox--{{$index}}"
+                class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                data-ng-class="{'is-checked' : configuration.selectedOptions[field]}"
+                data-ng-style="{'flex' : '1 0' + 100 / configuration.configStructure.numberOfColumns +'%'}">
+                <input
+                  id="field--unique-checkbox--{{$index}}"
+                  type="checkbox"
+                  class="mdl-checkbox__input"
+                  data-ng-model="configuration.selectedOptions[field]">
+                <span class="mdl-checkbox__label">{{field}}</span>
+              </label>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-layout-spacer"></div>
+</div>

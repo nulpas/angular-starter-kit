@@ -1,0 +1,488 @@
+<!-- Main content -->
+<div
+  data-ng-cloak
+  class="details-view"
+  data-ng-init="details.initForm()"
+  data-ng-if="details.detailsStructure && details.data"
+  data-mass-autocomplete>
+
+  <!-- Procedural view -->
+  <button
+    id="details-previous"
+    data-ng-if="details.entity === 'vehicles'"
+    class="mdl-button mdl-js-button mdl-js-ripple-effect details_big-button details-previous"
+    data-ng-click="details.previousEntity()">
+    <i class="material-icons">arrow_back</i>
+  </button>
+  <span class="mdl-tooltip mdl-tooltip--right" data-mdl-for="details-previous">Previous Vehicle</span>
+  <button
+    id="details-next"
+    data-ng-if="details.entity === 'vehicles'"
+    class="mdl-button mdl-js-button mdl-js-ripple-effect details_big-button details-next"
+    data-ng-click="details.nextEntity()"
+    data-ng-style='::{"right": details.getScrollerWidth()}'>
+    <i class="material-icons">arrow_forward</i>
+  </button>
+  <span class="mdl-tooltip mdl-tooltip--left" data-mdl-for="details-next">Next Vehicle</span>
+  <div class='mdl-grid detailsContent'>
+    <div
+      data-ng-repeat="section in details.detailsStructure.sections track by $index"
+      data-ng-init="sectionIndex = $index"
+      data-ng-model="section.cards"
+      data-ui-sortable="details.sortableCardsOptions"
+      class="card-container mdl-cell
+       {{section.size.desktop ? 'mdl-cell--' + section.size.desktop + '-col-desktop': 'mdl-cell--hide-desktop'}}
+       {{section.size.tablet ? 'mdl-cell--' + section.size.tablet + '-col-tablet': 'mdl-cell--hide-tablet'}}
+       {{section.size.phone ? 'mdl-cell--' + section.size.phone + '-col-phone': 'mdl-cell--hide-phone'}}
+       ">
+
+      <!-- Procedural Cards -->
+      <div
+        data-ng-repeat="card in section.cards track by card.title"
+        class="mdl-card mdl-shadow--2dp"
+        data-ng-init="cardIndex =  $index"
+        id="{{::details.toCamelCase(card.title, ' ')}}">
+        <div
+          id="{{::details.toCamelCase(card.title, ' ') + '_title'}}"
+          class="mdl-card__title"
+          data-ng-class="{'cardDragHandler': true}"
+          data-ng-dblclick="card.collapsed= !card.collapsed">
+          <div class="card-title">
+            <i class="mdl-card__avatar material-icons">{{::card.icon}}</i>
+            <h2 class="mdl-card__title-text">{{::details.contractItemName(card.title)}}</h2>
+          </div>
+
+          <div data-ng-if="card.type === 'log' && card.log.entity" class="export-menu">
+            <button id="{{::details.toCamelCase(card.title, ' ') + 'export-excel'}}" class="mdl-button mdl-js-button mdl-button--icon">
+              <i class="material-icons">file_download</i>
+            </button>
+            <ul
+              class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
+              data-mdl-for="{{::details.toCamelCase(card.title, ' ') + 'export-excel'}}">
+              <li class="mdl-menu__item" data-ng-click="details.exportToExcelInContainers(card.log)">{{details.translations.exportCurrent}}</li>
+              <li class="mdl-menu__item" data-ng-click="details.exportToExcelInContainers(card.log, true)">{{details.translations.exportAll}}</li>
+            </ul>
+          </div>
+        </div>
+        <div class="slide" data-ng-if="!card.collapsed" data-ng-switch="card.type" id="{{::details.toCamelCase(card.title, ' ') + '_body'}}">
+          <!-- Log Widget -->
+          <div data-ng-switch-when="log" class="details-logs" data-ng-init="details.log[card.title] = []">
+            <div
+              data-ng-if="details.log[card.title]"
+              data-simple-list-view="details.log[card.title]"
+              data-custom-fields="card.log"
+              data-config-name="card.log.config"
+              data-entity="card.log.entity"
+              data-export-data="card.log.exportData"
+              data-internal-list-reference="card.log.internalListReference"
+              data-scroll-container="card.title + '_body'"
+              data-is-partial-view="'true'"></div>
+          </div>
+          <!-- Images Widget -->
+          <div
+            data-ng-switch-when="images"
+            class="detailSection"
+            data-ng-model="fieldSection"
+            data-ng-init="sectionIndex = $index"
+            data-ui-sortable="details.sortableOptions[card.title][sectionIndex]"
+            data-ng-class="[
+              details.sortableOptions[card.title][sectionIndex].cssClass,
+                {
+                  'fieldSection' : details.conf.moveFields
+                }
+            ]">
+            <div class="beauty-image-holder">
+              <img class="beauty-image" src="http://uat.bcaimage.com/Document?docType=VehicleImage&docId=1741979&width=500"/>
+            </div>
+          </div>
+          <!-- Form Widget -->
+          <form name="details.formDetails{{sectionIndex}}" data-ng-switch-when="form" data-ng-submit="$event.preventDefault()">
+            <div
+              class="detailSection"
+              data-ng-repeat="fieldSection in card.fieldsSections track by $index"
+              data-ng-model="fieldSection"
+              data-ng-init="sectionIndex = $index"
+              data-ui-sortable="details.sortableOptions[card.title][sectionIndex]"
+              data-ng-class="[
+                details.sortableOptions[card.title][sectionIndex].cssClass,
+                  {
+                    'fieldSection' : details.conf.moveFields
+                  }
+                ]">
+              <div
+                data-ng-repeat="field in fieldSection"
+                class="input-wrapper"
+                data-ng-if="!field.hide"
+                data-ng-cloak
+                data-ng-init="inputIndex =  $index"
+                data-ng-style="{'width': field.size+'%'}"
+                data-ng-class="{'not-sortable': card.list && sectionIndex > 0}"
+                data-ng-switch="contract[field.name].format ? contract[field.name].format : field.type">
+                <div
+                  class="inputDragHandler mdl-shadow--2dp"
+                  data-ng-class="{'inputDragHandlerActive': details.conf.moveFields && (!card.list || sectionIndex === 0)}"></div>
+
+                <!-- Input selector -->
+                <!-- Type: date-time -->
+                <div
+                  data-ng-switch-when="date-time"
+                  data-ng-show="!field.show || details.callFactoryFunction(field.show, details.data)"
+                  ng-init="details.createDateTimePickerOptions(details.data[field.name], field.name, true)">
+                  <label class="datetime-picker-label" for="{{::field.name + 'DateTimePickerField'}}">{{details.contractItemName(field.title)}}</label>
+                  <adm-dtp
+                    data-ng-if="!field.disabled && details.conf.editDetails"
+                    id="{{::field.name + 'DateTimePickerField'}}"
+                    ng-model="details.dateTimePickerOptions[field.name].default"
+                    options="details.dateTimePickerOptions[field.name]"
+                    on-change="details.onChangeDateTimeHandler(details.dateTimePickerOptions[field.name].default, field.name)"></adm-dtp>
+                  <p data-ng-if="field.disabled || !details.conf.editDetails">{{::details.dateTimePickerOptions[field.name].default}}</p>
+                </div>
+                <!-- Type: date-time -->
+                <div
+                  data-ng-switch-when="date"
+                  data-ng-show="!field.show && details.callFactoryFunction(field.show, details.data)"
+                  ng-init="details.createDateTimePickerOptions(details.data[field.name], field.name, false)">
+                  <label class="datetime-picker-label" for="{{::field.name + 'DatePickerField'}}">{{details.contractItemName(field.title)}}</label>
+                  <adm-dtp
+                    data-ng-if="!field.disabled || details.conf.editDetails"
+                    id="{{::field.name + 'DatePickerField'}}"
+                    ng-model="details.data[field.name]"
+                    options="details.dateTimePickerOptions[field.name]"></adm-dtp>
+                  <p data-ng-if="field.disabled || !details.conf.editDetails">{{::details.data[field.name]}}</p>
+                </div>
+                <!-- Type: string/enum -->
+                <div
+                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                  data-ng-switch-default
+                  data-ng-show="!field.show || details.callFactoryFunction(field.show, details.data)"
+                  data-ng-class="{
+                    'mdl-is-dirty': details.data[field.name] !== details.source[field.name],
+                    'mdl-is-invalid': field.required && !details.data[field.name].length,
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                    id="{{::field.name}}"
+                    class="mdl-textfield__input changing-type"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="contract[field.name].required ? contract[field.name].required : field.required"
+                    data-ng-disabled="!details.conf.editDetails || (field.disabled && details.data[field.name].length)"
+                    data-ng-if="!contract[field.name].enum"
+                    type="text">
+                  <!--Language part should be removed when Translatables are fixed-->
+                  <select
+                    id="{{::field.name}}"
+                    class="changing-type"
+                    data-ng-cloak
+                    data-ng-init="details.callFactoryFunction(field.action, details.data[field.name], card.fieldsSections, details.customFields); details.data[field.name] = (details.data[field.name][details.language] ? details.data[field.name][details.language] : details.data[field.name]);"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="contract[field.name].required ? contract[field.name].required : field.required"
+                    data-ng-disabled="!details.conf.editDetails || (field.disabled && details.data[field.name].length)"
+                    data-ng-if="contract[field.name].enum && !contract[field.name].items"
+                    data-ng-change="details.callFactoryFunction(field.action, details.data[field.name], card.fieldsSections, details.customFields); field.disabled = false"
+                    data-ng-options="details.contractItemName(data) for data in details.normalizeObject(contract[field.name].enum, details.data[field.name])">
+                    <option style="display:none" value="">select a type</option>
+                  </select>
+                  <select
+                    id="{{::field.name}}"
+                    class="changing-type"
+                    multiple
+                    data-ng-cloak
+                    data-ng-init="details.callFactoryFunction(field.action, details.data[field.name], card.fieldsSections, details.customFields)"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="contract[field.name].required ? contract[field.name].required : field.required"
+                    data-ng-disabled="!details.conf.editDetails || (field.disabled && details.data[field.name].length)"
+                    data-ng-if="contract[field.name].enum && contract[field.name].items"
+                    data-ng-change="details.callFactoryFunction(field.action, details.data[field.name], card.fieldsSections, details.customFields); field.disabled = false"
+                    data-ng-options="details.contractItemName(data) for data in details.normalizeChoices(contract[field.name].enum, details.data[field.name])">
+                    <option style="display:none" value="">select a type</option>
+                  </select>
+                  <label class="mdl-textfield__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</label>
+                  <p data-ng-if="contract[field.name].enum && contract[field.name].items && !details.data[field.name].length">OPEN</p>
+                </div>
+                <!-- Type: hidden -->
+                <div
+                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                  data-ng-switch-when="hidden"
+                  data-ng-if="!field.hide">
+                  <input
+                    id="{{::field.name}}"
+                    type="hidden"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="field.required">
+                </div>
+                <!-- Type: integer -->
+                <div
+                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                  data-ng-switch-when="integer"
+                  data-ng-if="!field.hide"
+                  data-ng-class="{
+                    'mdl-is-dirty': details.data[field.name] !== details.source[field.name],
+                    'mdl-is-invalid': field.required && !details.data[field.name].length,
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                    id="{{::field.name}}"
+                    class="mdl-textfield__input"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="contract[field.name].required ? contract[field.name].required : field.required"
+                    data-ng-disabled="!details.conf.editDetails"
+                    type="number">
+                  <label class="mdl-textfield__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</label>
+                </div>
+                <!-- Type: float -->
+                <div
+                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                  data-ng-switch-when="float"
+                  data-ng-if="!field.hide"
+                  data-ng-class="{
+                    'mdl-is-dirty': details.data[field.name] !== details.source[field.name],
+                    'mdl-is-invalid': field.required && !details.data[field.name].length,
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                    id="{{::field.name}}"
+                    class="mdl-textfield__input"
+                    type="text"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="contract[field.name].required ? contract[field.name].required : field.required"
+                    data-ng-disabled="!details.conf.editDetails"
+                    data-ng-change="details.callFactoryFunction(field.action, details.data[field.name], details.calculatedFields);"
+                    data-ng-init="details.callFactoryFunction(field.action, details.data[field.name], details.calculatedFields);"
+                    pattern="{{details.floatPattern}}">
+                  <label class="mdl-textfield__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</label>
+                </div>
+                <!-- Type: number -->
+                <div
+                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                  data-ng-switch-when="number"
+                  data-ng-if="!field.hide"
+                  data-ng-class="{
+                    'mdl-is-dirty': details.data[field.name] !== details.source[field.name],
+                    'mdl-is-invalid': field.required && !details.data[field.name].length,
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                    id="{{::field.name}}"
+                    class="mdl-textfield__input"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="field.required"
+                    data-ng-disabled="!details.conf.editDetails"
+                    type="number">
+                  <label class="mdl-textfield__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</label>
+                </div>
+                <!-- Type: int32 -->
+                <div
+                  class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                  data-ng-switch-when="int32"
+                  data-ng-if="!field.hide"
+                  data-ng-class="{
+                    'mdl-is-dirty': details.data[field.name] !== details.source[field.name],
+                    'mdl-is-invalid': field.required && !details.data[field.name].length,
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                    id="{{::field.name}}"
+                    class="mdl-textfield__input"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-required="field.required"
+                    data-ng-disabled="!details.conf.editDetails"
+                    type="number">
+                  <label class="mdl-textfield__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</label>
+                </div>
+                <!-- Type: button -->
+                <div
+                  data-ng-switch-when="button"
+                  data-ng-if="!field.hide">
+                  <button
+                    id="button-{{::field.name}}"
+                    prevent-double-click
+                    style="margin: 20px; float: right"
+                    class="mdl-button mdl-button--raised mdl-js-button mdl-js-ripple-effect mdl-button--colored"
+                    data-ng-click="details.callFactoryFunction(field.action, details.data)"
+                    data-ng-disabled="!details.callFactoryFunction(field.show, details.data)">
+                    {{details.contractItemName(field.title)}}
+                  </button>
+                </div>
+                <!-- Type: checkbox -->
+                <label
+                  class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                  data-ng-switch-when="checkbox"
+                  data-ng-if="!field.hide"
+                  data-ng-class="{
+                    'is-checked' : details.data[field.name],
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                    id="{{::field.name}}"
+                    class="mdl-checkbox__input"
+                    data-ng-model="details.data[field.name]"
+                    data-ng-disabled="!details.conf.editDetails"
+                    type="checkbox">
+                  <span class="mdl-checkbox__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</span>
+                </label>
+                <!-- Type: Calculated -->
+                <label
+                  data-ng-switch-when="calculated"
+                  data-ng-if="!field.hide">
+                  <span class="mdl-checkbox__label">{{::field.title}}</span> :
+                  <span
+                    data-ng-model="details.calculatedFields[field.name]"
+                    data-ng-required="field.required"
+                    data-ng-disabled="!details.conf.editDetails">{{details.calculatedFields[field.name]}}</span>
+                </label>
+                <!-- Type: Password -->
+                <div
+                    class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label"
+                    data-ng-switch-when="password"
+                    data-ng-if="!field.hide"
+                    data-ng-class="{
+                    'mdl-is-dirty': details.data[field.name] !== details.source[field.name],
+                    'mdl-is-invalid': field.required && !details.data[field.name].length,
+                    'is-disabled': !details.conf.editDetails
+                  }">
+                  <input
+                      id="{{::field.name}}"
+                      class="mdl-textfield__input"
+                      data-ng-model="details.data[field.name]"
+                      data-ng-required="contract[field.name].required ? contract[field.name].required : field.required"
+                      data-ng-disabled="!details.conf.editDetails || (field.disabled && details.data[field.name].length)"
+                      type="password">
+                  <label class="mdl-textfield__label" for="{{::field.name}}">{{details.contractItemName(field.title)}}</label>
+                </div>
+                <!--TODO : Remove language when this value is not an object-->
+                <div data-ng-repeat="(fieldContainerId, fieldContainer) in details.conditionalFields[field.name][details.data[field.name]].conditionalFields">
+                  <section>
+                    <p>{{fieldContainerId}}</p>
+                    <div
+                      data-ng-if="!fieldContainer.fieldType"
+                      data-ng-repeat="(conditionalFieldId, conditionalField) in fieldContainer">
+                      <div
+                        data-conditional-combo
+                        data-conditional-field="contract[fieldContainerId].properties[conditionalFieldId]"
+                        data-container-id="fieldContainerId"
+                        data-conditional-field-id="conditionalFieldId"
+                        data-conditional-field-label="details.translations[conditionalFieldId]"
+                        data-detail-data="details.data"
+                        data-edit-details="details.conf.editDetails">
+                      </div>
+                    </div>
+                    <div data-ng-if="fieldContainer.fieldType">
+                      <div
+                        data-conditional-combo
+                        data-conditional-field="contract[fieldContainerId].properties[conditionalFieldId]"
+                        data-container-id="fieldContainerId"
+                        data-conditional-field-id="fieldContainerId"
+                        data-detail-data="details.data"
+                        data-edit-details="details.conf.editDetails">
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+            <div class="mdl-card__empty-card" data-ng-if="card.fieldsSections.length === 0">
+              This card is empty.
+            </div>
+          </form>
+          <!-- Config Widget -->
+          <form data-ng-switch-when="config" data-ng-submit="$event.preventDefault()">
+            <div
+                    class="detailSection"
+                    data-ng-repeat="fieldSection in card.fieldsSections track by $index"
+                    data-ng-model="fieldSection"
+                    data-ng-init="sectionIndex = $index"
+                    data-ui-sortable="details.sortableOptions[card.title][sectionIndex]"
+                    data-ng-class="[
+                details.sortableOptions[card.title][sectionIndex].cssClass,
+                  {
+                    'fieldSection' : details.conf.moveFields
+                  }
+                ]">
+              <div
+                      data-ng-repeat="field in fieldSection"
+                      class="input-wrapper"
+                      data-ng-if="(field.activeWhen ? details.data[field.activeWhen] === true : true) && !field.hide"
+                      data-ng-cloak
+                      data-ng-init="inputIndex =  $index"
+                      data-ng-style="{'width': field.size+'%'}"
+                      data-ng-class="{'not-sortable': card.list && sectionIndex > 0}"
+                      data-ng-switch="contract[field.name].type ? contract[field.name].type : field.type">
+                <div
+                        class="inputDragHandler mdl-shadow--2dp"
+                        data-ng-class="{'inputDragHandlerActive': details.conf.moveFields && (!card.list || sectionIndex === 0)}"></div>
+
+                <!-- Input selector -->
+                <!-- Type: checkbox -->
+                <label
+                        class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                        data-ng-switch-when="checkbox"
+                        data-ng-if="!field.hide"
+                        data-ng-class="{
+                    'is-checked' : details.data[field.name]
+                  }">
+                  <input
+                          id="{{field.name}}"
+                          class="mdl-checkbox__input"
+                          data-ng-model="details.data[field.name]"
+                          type="checkbox">
+                  <span class="mdl-checkbox__label" for="{{field.name}}">{{details.contractItemName(field.title)}}</span>
+                </label>
+              </div>
+            </div>
+            <div class="mdl-card__empty-card" data-ng-if="card.fieldsSections.length === 0">
+              This card is empty.
+            </div>
+          </form>
+          <!-- DataTable Widget -->
+          <div data-ng-switch-when="datatable">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+              <thead>
+                <tr>
+                  <th
+                    class="mdl-data-table__cell--non-numeric"
+                    data-ng-style="{'width': card.fieldsSections[0].size+'%'}">{{::card.fieldsSections[0].title}}</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="is-selected">
+                  <td>
+                    <div class="mdl-textfield mdl-js-textfield">
+                      <input class="mdl-textfield__input" type="text"
+                      id="{{::card.fieldsSections[0].name+'adder'}}" data-ng-model="details.newDatatableElement[card.dataOrigin]">
+                      <label class="mdl-textfield__label"
+                      for="{{::card.fieldsSections[0].name+'adder'}}">{{::('New ' + card.fieldsSections[0].name + '...')}}</label>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="mdl-button mdl-js-button mdl-button--icon">
+                      <i class="material-icons"
+                      data-ng-click="details.addNewDatatableElement(card.dataOrigin)">add</i>
+                    </button>
+                  </td>
+                </tr>
+                <tr data-ng-repeat="row in details.data[card.dataOrigin] track by $index">
+                  <td>
+                    <div class="mdl-textfield mdl-js-textfield">
+                      <input class="mdl-textfield__input" type="text"
+                      id="{{::card.fieldsSections[0].name+$index}}" data-ng-model="details.data[card.dataOrigin][$index]">
+                      <label class="mdl-textfield__label" for="{{::card.fieldsSections[0].name+$index}}">{{card.fieldsSections[0].name}}...</label>
+                    </div>
+                  </td>
+                  <td>
+                    <button class="mdl-button mdl-js-button mdl-button--icon">
+                      <i class="material-icons" data-ng-click="details.data[card.dataOrigin].splice($index, 1)">delete</i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="mdl-card__empty-card" data-ng-if="card.fieldsSections.length === 0">
+              This card is empty.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,714 @@
+// # IMPORTS ##########################################
+@import "../../../../_app.mixins";
+@import "../../../../_app.variables";
+@import "list.variables";
+
+.list-item-entering.ng-enter {
+  @include animation(fadeIn .7s);
+}
+
+.list-item-entering.ng-leave {
+  @include animation(fadeOut .7s);
+}
+#list-container {
+
+  .info-container {
+    display: flex;
+    margin: 6px 16px 0;
+  }
+
+  .list-sorting-bar {
+    position: relative;
+    flex: 1;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+
+    .order-label {
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(#24701d, 0.79) !important;
+      text-transform: uppercase;
+      border: 1px rgba(black, 0.2) solid;
+      float: left;
+      padding: 0 10px 0 2px;
+      max-width: 90px;
+      flex-grow: 1;
+      flex-shrink: 1;
+      margin-right: 8px;
+      color: rgba(black, 0.8);
+    }
+
+    .sort-bar-fields {
+      display: flex;
+      height: 20px;
+
+      .field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 120px;
+        flex-grow: 1;
+        flex-shrink: 1;
+        font-weight: normal !important;
+        border: 1px transparent solid;
+        margin: 0 2px;
+        padding: 0 2px 0 10px;
+        background-color: rgba(#2e8825, 0.6) !important;
+        border-radius: 0 10px 10px 0;
+        float: left;
+        height: 18px;
+        color: rgba(black, 0.7);
+
+        &:hover {
+          cursor: e-resize;
+        }
+
+        .mdl-chip__text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 55%;
+        }
+
+        .material-icons {
+          margin: 0;
+          padding-bottom: 1px;
+          &.remove-action {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+
+    .property-placeholder {
+      background-color: rgba(transparent, 0.15);
+      border-right: 1px rgba(transparent, 0.5) dashed;
+      border-left: 1px rgba(transparent, 0.5) dashed;
+      height: inherit;
+      max-width: 120px;
+      flex: 1;
+    }
+
+    .sorting-actions {
+      z-index: 10;
+      display: flex;
+      align-items: center;
+
+      .action-button.mdl-button{
+        display: flex;
+        justify-content: center;
+        color: green;
+        .material-icons {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+
+  .edition-mode-layer {
+    z-index: 5;
+    position: fixed;
+    top: 99px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 99px);
+    display: flex;
+    flex-direction: column;
+
+    .mdl-tooltip {
+      text-align: center;
+      animation: none !important;
+      opacity: 0;
+      transform: none;
+      &.is-active {
+        opacity: 1;
+      }
+    }
+
+    .persist-checkbox-container {
+      width: 100%;
+      height: 25px;
+
+      .persist-config {
+        color: white;
+        float: right;
+        margin-right: 20px;
+        .mdl-checkbox__box-outline {
+          border: 2px solid rgba(255, 255,255 , 0.54);
+        }
+        &.mdl-checkbox.is-checked .mdl-checkbox__tick-outline {
+          background-color: rgba(255, 255,255 , 0.54) !important;
+        }
+      }
+    }
+
+    .list-sorting-bar {
+      padding: 0;
+      .order-label {
+        background: transparent !important;
+        color: white;
+      }
+      .sort-bar-fields {
+        flex: 1;
+      }
+    }
+
+    #sorting-fields-edit-mode {
+
+      .field {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 120px;
+        flex-grow: 1;
+        flex-shrink: 1;
+        font-weight: normal !important;
+        background-color: rgba(white, 0.5) !important;
+        border-color: transparent;
+        padding: 0 2px 0 10px;
+        float: left;
+        margin: 0 2px;
+
+        &:hover {
+          cursor: e-resize;
+        }
+        .mdl-chip__text {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width: 55%;
+        }
+
+        .material-icons {
+          margin: 0;
+          &.remove-action {
+            font-size: 16px;
+          }
+        }
+      }
+    }
+    .edition-container {
+      background-color: #0b3e6f;
+    }
+
+    .edit-config-title {
+      height: 50px;
+      background: rgba(black, 0.5);
+      color: white;
+      font-size: 1.2em;
+      padding: 0 20px;
+      @include layout-row;
+      @include layout-align-center;
+      @include layout-align-space-between;
+
+      .title-text {
+        border-right: 1px white solid;
+        padding-right: 10px;
+      }
+
+      .edit-config-actions {
+        flex: 1;
+        @include layout-row;
+        @include layout-align-space-between;
+
+        .action-button {
+          margin-right: 5px;
+        }
+      }
+    }
+
+    &.ng-enter {
+      @include animation(slideInDown 0.8s);
+    }
+    &.ng-leave {
+      @include animation(slideOutUp 0.8s);
+    }
+
+    .fields-container {
+      overflow: hidden;
+      padding: 15px;
+      background: rgba(black, 0.4);
+      .edit-box-field {
+        margin: 5px;
+        cursor: move;
+      }
+    }
+    .screen-filler {
+      background-color: rgba(black, 0.8);
+      flex: 1;
+      &.ng-hide-remove {
+        @include animation(fadeIn 1s);
+      }
+      &.ng-hide-add {
+        @include animation(fadeOut 1s);
+      }
+    }
+    .hidden-image {
+      width: 1.4em !important;
+    }
+
+    .field-leave.ng-leave {
+      @include animation(zoomOutRight .4s);
+    }
+
+    .vehicle-field.ng-enter {
+      @include animation(zoomInRight .4s);
+    }
+
+    .vehicle-field {
+      background-color: #aee680;
+      box-shadow: inset 0 0 0 2px rgba(#73bb73, 1);
+      outline-offset: -1px;
+      opacity: 1;
+      flex: 0 1 33.333333333333%;
+
+      .list-label {
+        text-align: left;
+      }
+
+      .list-value {
+        text-align: right;
+      }
+
+      &:hover .field-actions {
+        display: block;
+      }
+      &:active .field-actions {
+        display: none;
+      }
+
+    &:hover {
+      .handle {
+        z-index: 9999;
+        background-color: rgba(black, 0.5) !important;
+      }
+    }
+  }
+
+    .title-chip {
+      max-width: 20%;
+      font-weight: normal !important;
+      border-right: 1px rgba(transparent, 0.5) solid;
+      border-left: 1px rgba(transparent, 0.5) solid;
+      margin: 0 -1px -1px 0;
+      padding: 0 2px 0 10px;
+      background-color: rgba(transparent, 0.15) !important;
+      float: left;
+
+      .handle.draggable {
+        cursor: move;
+      }
+
+      .title-chip-close {
+        padding-top: 2px;
+      }
+
+      .title-chip-text {
+        min-width: 10px;
+        position: relative;
+        width: 85%;
+      }
+
+      .title-chip-icon {
+        cursor: pointer;
+        margin-left: 5px;
+      }
+    }
+
+    .text-container {
+      @include layout-align-center;
+      justify-content: center !important;
+
+    }
+  }
+
+  .vehicles-list {
+
+    margin: 0;
+
+    .highlighted {
+      .text-container {
+        background-color: yellow;
+        box-shadow: inset 0 0 0 2px rgba(#9a9c10, 1);
+      }
+    }
+
+    .dim {
+      .list-label, .list-value {
+        opacity: 0.2;
+      }
+    }
+
+    .selected-item {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      background-color: rgba(#086e20, 0.5) !important;
+    }
+
+    .vehicle-list-li-element {
+      position: relative;
+      overflow: visible;
+      margin: 12px;
+      padding: 0;
+      background-color: white;
+    }
+
+    .list-item-container {
+      padding: 5px;
+      width: 100%;
+
+      .flex-item {
+        flex: 1;
+        width: 100%;
+      }
+    }
+
+    .vehicle-image-container {
+      position: relative;
+
+      .vehicle-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .hidden-image {
+      width: 0;
+    }
+
+    .image-placeholder-close {
+      height: 100%;
+      position: absolute;
+      right: 0;
+      background-color: rgba(black, 0.6);
+      color: $cl-list-item-background;
+
+      .image-placeholder-close-icon {
+        margin: 64px 0;
+      }
+    }
+
+    .vehicle-information-container {
+      flex: 1;
+      .mdl-grid, .mdl-cell{
+        margin: 0;
+        padding: 0;
+      }
+
+      & > .vehicle-information-container-div {
+        margin: 0 2px;
+      }
+
+      .vehicle-title-container {
+        flex: 1 0 100%;
+        height: 42px;
+        min-height: 42px;
+        max-height: 42px;
+        margin-bottom: 2px;
+        background-color: $cl-containers-background;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+
+        .property-placeholder {
+          background-color: rgba(transparent, 0.15);
+          border-right: 1px rgba(transparent, 0.5) dashed;
+          border-left: 1px rgba(transparent, 0.5) dashed;
+          min-width: inherit;
+          width: auto;
+          height: inherit;
+        }
+
+        .title-chip {
+          display: flex;
+          align-items: center;
+          padding: 0 10px 0 10px;
+          height: inherit;
+          font-weight: bold;
+          position: relative;
+
+          .title-chip-text {
+            height: 100%;
+            min-width: 10px;
+            position: relative;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            @include layout-row;
+            @include layout-align-center;
+          }
+        }
+      }
+
+      .vehicle-fields-container {
+        width: 100%;
+        height: 100%;
+        min-height: 7em;
+
+        .vehicle-field {
+          position: relative;
+          font-size: 0.9em;
+          line-height: 20px;
+          border: 0.5px lightgrey solid;
+          float: left;
+
+          .text-container {
+            flex: 1 0 90%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 6px;
+
+            .list-label {
+              text-align: left;
+            }
+
+            .list-value {
+              text-align: right;
+            }
+          }
+        }
+
+        .property-placeholder {
+          z-index: 25;
+          flex: 0 1 33.333333333333%;
+          box-shadow: inset 0 0 0 2px rgba(#b4aa9b, 1);
+          background-color: antiquewhite;
+        }
+
+        .truncate {
+          width: 45%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+
+    .vehicle-actions-container {
+
+      display: flex;
+      flex-flow: column wrap;
+
+      .vehicle-basic-actions {
+        display: flex;
+        height: 42px;
+        min-height: 42px;
+        max-height: 42px;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2px;
+        background-color: $cl-containers-background;
+
+        .basic-action-button {
+          margin: 0 7.5px;
+        }
+      }
+
+      .vehicle-list-actions {
+        max-height: 7em;
+        text-align: center;
+        background-color: $cl-containers-background;
+        position: relative;
+        overflow-x: visible;
+        flex-direction: column;
+        flex: 1;
+
+        .vehicle-list-action-span {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: 0;
+          margin: auto;
+          width: 50%;
+          height: 35%;
+        }
+
+        .unused-field.ng-enter {
+          @include animation(zoomInLeft .4s);
+        }
+
+        .unused-field.ng-leave {
+          @include animation(zoomOutLeft .4s);
+        }
+
+        .unused-field {
+          position: relative;
+          width: 90%;
+          max-height: 20px;
+          display: inline-block;
+          overflow: hidden;
+          padding: 2px 6px;
+          background-color: #bbbbbb;
+          margin: 1px;
+          outline: grey solid 1px !important;
+          outline-offset: -1px;
+          cursor: pointer;
+          opacity: 0.6;
+        }
+
+        .unused-field:hover {
+          opacity: 1;
+        }
+
+        &::-webkit-scrollbar {
+          width: 0.5em;
+        }
+
+        &::-webkit-scrollbar-thumb {
+          background-color: darkgrey;
+          border-radius: 5px;
+        }
+      }
+    }
+
+    .field-actions {
+      display: none;
+      z-index: 9;
+      right: 0;
+      top: -28px;
+      padding: 4px 8px;
+      position: absolute;
+      background-color: rgba(black, 0.6);
+      border-radius: 2px 2px 0 0;
+      color: white;
+
+      &:active {
+        display: block !important;
+      }
+
+      .field-action-icon {
+        height: auto;
+        width: auto;
+        cursor: pointer;
+        font-size: 16px;
+        &:hover {
+          color: $cl-containers-background;
+        }
+      }
+    }
+
+    .handle.draggable {
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      cursor: move;
+    }
+
+    .last-element-list {
+      width: 100%;
+      height: 10px;
+      margin-bottom: 10px;
+    }
+
+    .mdl-spinner-load-data {
+      margin: 0 7px;
+      width: 18px;
+      height: 18px;
+      bottom: 5px;
+    }
+
+    .disappear {
+      position: absolute;
+      top: 0;
+      left: 0;
+      @include transition(all 1s);
+      transform: scale(0);
+    }
+
+    .appear {
+      position: absolute;
+      @include transition(all 1s);
+      transform: scale(1);
+    }
+
+    .bpmn-buttons-container {
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 5px;
+    }
+
+    .module-button {
+      .mdl-button--colored {
+        background-color: forestgreen;
+        color: white;
+      }
+    }
+
+    .state-button {
+      .mdl-button--colored {
+        background-color: mediumblue;
+        color: white;
+      }
+    }
+
+    .action-button {
+      .mdl-button--colored {
+        background-color: #ad1457;
+        color: white;
+      }
+    }
+
+    .item-actions-2 {
+      @include layout-column;
+      @include layout-align-center;
+      .parameterEnumFields {
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+      .enumContainer{
+        margin: 5px 0 0 15px;
+        display:flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: flex-start;
+        align-items: flex-start;
+        .mdl-textfield__error{
+          position: inherit;
+        }
+      }
+    }
+  }
+
+  #loading-more-data {
+    margin-left: 50%;
+    width: 60px;
+    height: 60px;
+    .highlighted {
+      .text-container {
+        background-color: yellow !important;
+      }
+    }
+  }
+}
+
+.mdl-textfield__label-date {
+  top: 0;
+  color: rgba(0,0,0, 0.5) !important;
+  font-size: 16px;
+  left: 5px !important;
+  right: 0;
+  pointer-events: none;
+  position: absolute;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-align: left;
+  z-index: 999 !important;
+}

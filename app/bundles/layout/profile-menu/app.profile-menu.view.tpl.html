@@ -1,0 +1,56 @@
+<ul>
+  <li
+    data-ng-repeat="partner in userData.partners track by partner.partnerId"
+    data-ng-click="!(partner.partnerId === userData.partner.partnerId) ? profile.changeBrand(partner.partnerId) : ''"
+    data-ng-disabled="partner.partnerId === userData.partner.partnerId"
+    class="mdl-menu__item first-level-item mdl-menu__item--full-bleed-divider brand-container">
+    <span
+      data-ng-if="partner.partnerId === userData.partner.partnerId"
+      class="brand-label">
+      {{::profile.getLabel('actualBrand')}}
+    </span>
+    <img
+      data-ng-src="{{'images/corporate/' + partner.partnerId + '/' + partner.partnerId + '-logo.png'}}"
+      class="header__logo mdl-list__item-avatar" alt="{{partner.name}}"
+      onerror="this.src='images/corporate/bca/bca-logo.png'">
+    <span class="brand-name">{{::partner.name}}</span>
+  </li>
+  <li
+    data-ng-repeat-start="(itemId, item) in profileMenu"
+    data-ng-click="item.entity || item.isLocal ? '' : $event.preventDefault(); $event.stopPropagation();"
+    class="mdl-menu__item first-level-item"
+    data-ng-if="item.entity || item.isLocal"
+    data-ui-sref="{{::item.state}}({{::item.param}})">
+    <button data-ng-if="::item.items" class="mdl-button mdl-js-button mdl-button--icon" data-ng-click="$event.preventDefault(); $event.stopPropagation();">
+      <i id="{{itemId}}-item-local"  class="material-icons">keyboard_arrow_left</i>
+    </button>
+    {{::profile.getLabel(item.label)}}
+
+    <ul
+      class="mdl-menu mdl-menu--bottom-right mdl-js-menu sub-menu mdl-shadow--4dp mdl-js-ripple-effect"
+      data-mdl-for="{{itemId}}-item-local"
+      data-ng-if="::item.items"
+      data-profile-menu="item.items">
+    </ul>
+  </li>
+  <li
+    data-ng-click="item.entity ? '' : $event.preventDefault(); $event.stopPropagation();"
+    data-ui-sref="{{::item.state}}({{::item.param}})"
+    class="mdl-menu__item"
+    disabled
+    data-ng-if="!item.entity && !item.isLocal">
+    <button data-ng-if="::item.items" class="mdl-button mdl-js-button mdl-button--icon" data-ng-click="$event.preventDefault(); $event.stopPropagation();">
+      <i id="{{itemId}}-item" class="material-icons">keyboard_arrow_left</i>
+    </button>
+
+    {{::profile.getLabel(item.label)}}
+
+    <ul
+      class="mdl-menu mdl-menu--bottom-right mdl-js-menu sub-menu mdl-shadow--4dp mdl-js-ripple-effect"
+      data-mdl-for="{{itemId}}-item"
+      data-ng-if="::item.items"
+      data-profile-menu="item.items">
+    </ul>
+    <li data-ng-repeat-end data-ng-hide="true"></li>
+  </li>
+</ul>

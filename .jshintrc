@@ -1,0 +1,21 @@
+{
+  "node": true,
+  "browser": true,
+  "esversion": 6,
+  "bitwise": true,
+  "curly": true,
+  "eqeqeq": true,
+  "latedef": false,
+  "noarg": true,
+  "undef": true,
+  "unused": true,
+  "strict": true,
+  "jquery": true,
+  "globals": {
+    "angular": false,
+    "_": false,
+    "dialogPolyfill": false,
+    "componentHandler": false,
+    "moment": false
+  }
+}

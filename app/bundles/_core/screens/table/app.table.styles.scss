@@ -1,0 +1,94 @@
+.bca-table {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: white;
+
+  .bca-table__container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 12px;
+  }
+
+  .bca-table__tools-container {
+    padding: 10px;
+    border-bottom: 1px solid rgba(#000, 0.12);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .bca-table__header-container {
+    display: flex;
+    justify-content: space-around;
+    width: calc(100% - 0.5em);
+    /* El 0.5em es el ancho de la barra de scroll. Guardar este valor en una variable */
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  }
+
+  .bca-table__header-label {
+    flex: 1;
+    font-weight: bold;
+    height: 48px;
+    display: flex;
+    align-items: center;
+
+    color: grey;
+  }
+
+  .bca-table__header-handle {
+    width: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bca-table__scroll-container {
+    overflow: auto;
+    position: relative;
+    height: 100%;
+
+    & > DIV {
+      display: flex;
+    }
+
+    &::-webkit-scrollbar {
+      width: 0.5em;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: grey;
+      border-radius: 5px;
+    }
+  }
+
+  .bca-table__item {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid rgba(#000, 0.12);
+  }
+
+  .bca-table__value {
+    flex: 1;
+    align-self: center;
+  }
+
+  .bca-table__handle {
+    width: 50px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

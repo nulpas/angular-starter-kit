@@ -1,0 +1,19 @@
+<div class=" mdl-grid eligibility-rules-configuration-view-wrapper">
+  <div class="mdl-layout-spacer"></div>
+
+  <div
+    data-partner-selector
+    data-data-load="configuration.dataLoad"
+    data-ng-if="configuration.isBcaAdmin && !configuration.partner" style="position: relative">
+  </div>
+
+  <div class="mdl-layout-spacer"></div>
+</div>
+<div
+    data-ng-if="configuration.partner"
+    data-details-view="configuration.selectedOptions"
+    data-entity="'configurations'"
+    data-contract=""
+    data-config="configuration.configStructure"
+    data-config-name="'configurations/' + configuration.dataStructureName">
+</div>

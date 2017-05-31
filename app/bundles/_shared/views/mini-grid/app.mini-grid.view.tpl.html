@@ -1,0 +1,244 @@
+<!-- # EDITOR LAYER -->
+<div class="edition-mode-layer mdl-shadow--4dp" data-ng-if="small.editMode">
+  <div class="edit-config-title" data-ng-init="vgTableFields = []">
+    <span class="title-text">Grid card edition</span>
+    <div class="grid-sorting-bar">
+      <span class="order-label">Order</span>
+      <div
+        id="sorting-fields-edit-mode"
+        class="sort-bar-fields"
+        data-ui-sortable="small.sortBarSortableOptions"
+        data-ng-model="small.viewTempConfig.orderFields">
+        <span class="field" data-ng-repeat="(sortFieldKey, sortField) in small.viewTempConfig['orderFields']">
+          <span class="mdl-chip__text">{{small.getLabel(sortField.name)}}</span>
+          <button class="mdl-chip__action" data-ng-click="sortField['orderDescending'] = !sortField['orderDescending']">
+            <i class="material-icons">{{sortField.orderDescending ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+          </button>
+          <button
+            type="button"
+            class="mdl-chip__action"
+            data-ng-click="small.removeItemFromList(small.viewConfig['orderFields'], sortFieldKey)">
+            <i class="material-icons remove-action">cancel</i>
+          </button>
+        </span>
+      </div>
+    </div>
+    <div class="edit-config-actions">
+      <button
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored action-button"
+        data-ng-click="small.saveEditChanges();  small['editMode'] = false;">
+        Accept
+      </button>
+      <button
+        class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored action-button"
+        data-ng-click="small.cancelEditChanges();  small['editMode'] = false">
+        Cancel
+      </button>
+    </div>
+  </div>
+  <div class="layers-container">
+    <div class="persist-checkbox-container">
+      <label
+        for="permanentSave"
+        class="mdl-checkbox mdl-js-checkbox persist-config"
+        data-ng-class="{'is-checked': small.persistConfig}">
+        <span class="mdl-checkbox__label">Persist configuration</span>
+        <input type="checkbox" id="permanentSave" class="mdl-checkbox__input" data-ng-model="small.persistConfig">
+      </label>
+    </div>
+    <div
+      data-ng-repeat="(layerKey, layer) in small.viewTempConfig.custom['layers']"
+      class="mdl-card mdl-shadow--4dp card-side-{{small.viewTempConfig.custom['layers'].length < 7 ? layerKey % small.viewTempConfig.custom['layers'].length : layerKey % 7}}">
+      <button
+        class="mdl-button mdl-js-button mdl-button--icon remove-layer-button"
+        data-ng-click="small.removeItemFromList(small.viewTempConfig.custom['layers'], layerKey)" data-ng-if="small.viewTempConfig.custom['layers'].length > 1">
+        <i class="material-icons">clear</i>
+      </button>
+      <div class="card-title"><span class="card-number">{{layerKey + 1}}</span></div>
+      <div
+        class="mdl-card__supporting-text layer-fields-container"
+        data-ui-sortable="small.sortableOptions"
+        data-ng-model="layer.fields">
+        <div
+          data-ng-repeat="(fieldKey, field) in layer.fields track by field.name"
+          data-ng-init="vgTableFields.push(field.name)"
+          data-ng-if="fieldKey < 4" class="mdl-chip mdl-chip--deletable mdl-shadow--2dp edit-layer-field">
+          <span class="mdl-chip__text">{{small.getLabel(field.name)}}</span>
+          <button
+            type="button"
+            class="mdl-chip__action"
+            data-ng-click="small.removeItemFromList(layer.fields, fieldKey); vgTableFields.splice(vgTableFields.indexOf(field.name), 1)">
+            <i class="material-icons">cancel</i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mdl-card mdl-shadow--4dp card-side-{{small.viewTempConfig.custom['layers'].length < 7 ? small.viewTempConfig.custom['layers'].length : small.viewTempConfig.custom['layers'].length % 7}}">
+      <div class="card-title">
+        <span class="card-number">({{small.viewTempConfig.custom['layers'].length + 1}})</span>
+      </div>
+      <div class="mdl-card__supporting-text add-layer-card">
+        <button class="mdl-button mdl-js-button mdl-button--fab" data-ng-click="small.addLayer()">
+          <i class="material-icons">add</i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="fields-container"
+    data-ui-sortable="small.sortableAllFieldsOptions"
+    data-ng-model="small.partnerAvailableFields">
+    <span
+      data-ng-repeat="field in small.partnerAvailableFields"
+      class="mdl-chip mdl-shadow--2dp edit-box-field"
+      data-ng-class="vgTableFields.includes(field.name) ? 'duplicated-chip-field' : 'available-chip-field'">
+      <span class="mdl-chip__text">{{small.getLabel(field.name)}}</span>
+    </span>
+  </div>
+</div>
+
+<div class="info-container">
+  <!-- # SORTING BAR -->
+  <div class="grid-sorting-bar">
+    <span data-ng-if="small.viewConfig['orderFields'].length > 0" class="order-label">Order:</span>
+    <div
+      id="sorting-fields"
+      class="sort-bar-fields"
+      data-ui-sortable="small.sortBarSortableOptions"
+      data-ng-model="small.viewConfig.orderFields">
+      <span class="field" data-ng-repeat="(sortFieldKey, sortField) in small.viewConfig['orderFields']">
+        <span id="sort-field--{{sortFieldKey}}" class="mdl-chip__text">{{small.getLabel(sortField.name)}}</span>
+        <button class="mdl-chip__action" data-ng-click="sortField['orderDescending'] = !sortField.orderDescending">
+          <i class="material-icons">{{sortField.orderDescending ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+        </button>
+        <button
+          type="button"
+          class="mdl-chip__action"
+          data-ng-click="small.removeItemFromList(small.viewConfig['orderFields'], sortFieldKey)">
+          <i class="material-icons remove-action">cancel</i>
+        </button>
+      </span>
+    </div>
+    <div id="sorting-actions" class="sorting-actions" data-ng-if="small.viewConfig['orderFields'].length > 0">
+      <button
+        class="action-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon"
+        data-ng-click="small.sortGrid()">
+        <i class="material-icons">sort</i>
+      </button>
+    </div>
+  </div>
+
+  <!-- # TOTAL RESULTS -->
+  <div data-counter></div>
+</div>
+
+<!-- # FILTER BAR -->
+<div
+  id="mini-grid-filters"
+  class="advanced-search-in-view"
+  data-ng-if="!small.editMode && small.filters && small.filters.length > 0">
+  <div class="advanced-search-in-view-label">
+    <span>Filtered by</span>
+  </div>
+  <div data-ng-repeat="filter in small.filters" class="advanced-search-in-view-element">
+    <span class="mdl-chip mdl-chip--deletable">
+      <span class="mdl-chip__text">{{filter.toString}}</span>
+      <button type="button" class="mdl-chip__action" data-ng-click="small.removeFromFilters(filter)">
+        <i class="material-icons">cancel</i>
+      </button>
+    </span>
+  </div>
+</div>
+
+<!-- # MINI GRID VIEW -->
+<div
+  id="mini-grid-vehicles"
+  data-multiple-selection-zone
+  data-control="control"
+  class="mdl-grid">
+  <div
+    data-ng-repeat="(rowKey, row) in miniGridView"
+    id="mini-grid-elem-{{rowKey}}"
+    data-ng-init="vgSide = 0; small.viewConfig.custom['layers'].length"
+    class="card-side-{{small.viewConfig.custom['layers'].length < 7 ? vgSide % small.viewConfig.custom['layers'].length : vgSide % 7}} mdl-card mdl-shadow--4dp  mdl-cell mdl-cell--4-col-phone mdl-cell--4-col-tablet mdl-cell--2-col-desktop mini-grid-view-item"
+    data-multiple-selection-item
+    data-ng-class="{'selecting-grid': isSelecting, 'selected-grid': isSelected}">
+
+    <div class="selected-layer"></div>
+
+    <div
+      class="mdl-card__title mdl-card--expand"
+      data-ng-style="{'background-image':'url(http://uat.bcaimage.com/Document?docType=VehicleImage&docId=1741979&width=500)'}">
+      <div class="title-background-color">
+        <div id="title-{{rowKey}}" class="card-title">{{small.getItemTitle(row, small.shared.TITLE)}}</div>
+        <div class="mdl-tooltip mdl-tooltip--top" data-mds-for="title-{{rowKey}}">
+          {{small.getItemTitle(row, small.shared.TITLE)}}
+        </div>
+      </div>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <div
+        data-ng-class="{'disabled-direction-arrow' : small.viewConfig.custom['layers'].length == 1}"
+        data-ng-click="vgSide = small.getPreviousSide(small.viewConfig.custom['layers'].length, vgSide)"
+        class="direction-arrow">
+        <i class="material-icons" data-ng-if="small.viewConfig.custom['layers'].length > 1">navigate_before</i>
+      </div>
+      <div
+        data-ng-repeat="(layerKey, layer) in small.viewConfig.custom['layers']"
+        data-ng-hide="!(vgSide % small.viewConfig.custom['layers'].length === layerKey)"
+        class="data-container">
+        <div
+          data-ng-repeat="(fieldKey, field) in layer.fields"
+          data-ng-if="fieldKey < 4"
+          class="card-field">
+          <strong>{{small.getLabel(field.name)}}:</strong>
+          <span data-ng-if="field.format === 'date-time' || field.format === 'date'">
+            {{small.getField(row, field.name) | date: 'MMMM dd, yyyy, HH:mm:ss'}}
+          </span>
+          <span data-ng-if="field.format !== 'date-time' && field.format !== 'date'">
+            {{small.getField(row, field.name)}}
+          </span>
+        </div>
+      </div>
+      <div
+        data-ng-class="{'disabled-direction-arrow': small.viewConfig.custom['layers'].length === 1}"
+        data-ng-click="vgSide = vgSide + 1;"
+        class="direction-arrow">
+        <i class="material-icons" data-ng-if="small.viewConfig.custom['layers'].length > 1">navigate_next</i>
+      </div>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <button
+        id="config-{{::rowKey}}"
+        class="mdl-button mdl-js-button mdl-button--icon"
+        data-ng-click="small['editMode'] = true">
+        <i class="material-icons">edit</i>
+      </button>
+      <button
+        id="publish-{{::rowKey}}"
+        class="mdl-button mdl-js-button mdl-button--icon"
+        data-ng-click="small.saleEventFactory.executePublication(row)">
+        <i class="material-icons">send</i>
+      </button>
+      <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="config-{{rowKey}}">Edit Mode</span>
+      <span data-ng-repeat="(actionKey, action) in small.viewConfig['actions']">
+        <button
+          id="action-{{::rowKey}}{{::actionKey}}"
+          class="mdl-button mdl-js-button mdl-button--icon"
+          data-ui-sref="{{action.state}}({{small.transformActionParams(action.params, row)}})"
+          data-ng-click="action.click; small.viewDefinition.detailsCallParameters.params.$skip = rowKey; small.viewDefinition.currentElement = rowKey">
+          <i class="material-icons">{{action.icon}}</i>
+        </button>
+        {{action.state}}{{small.transformActionParams(action.params, row)}}
+        <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="action-{{rowKey}}{{actionKey}}">{{action.tooltip}}</span>
+      </span>
+      <button id="more-{{rowKey}}" class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">more_vert</i>
+      </button>
+      <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="more-{{rowKey}}">More...</span>
+    </div>
+  </div>
+</div>
+<div id="last-element-minigrid" class="last-element-list"></div>
+<div id="loading-more-data"  data-ng-show="small.viewDefinition.loadingData" class="mdl-spinner mdl-js-spinner is-active"></div>

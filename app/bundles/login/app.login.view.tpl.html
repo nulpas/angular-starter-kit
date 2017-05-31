@@ -1,0 +1,74 @@
+<div id="login-scope" class="mdl-layout mdl-js-layout">
+  <main class="mdl-layout__content">
+    <div id="login-scope__active" class="mdl-layout mdl-js-layout">
+      <div class="mdl-layout-spacer"></div>
+
+      <img id="login-scope__logo" data-ng-src="{{login.set.logoUrl}}" title="{{login.set.logoTooltip}}" alt="{{login.set.logoTooltip}}">
+
+      <div class="mdl-layout-spacer"></div>
+
+      <div class="fab-language-container" data-app-language-fab data-login="login" data-direction="'left'">{{login.language}}</div>
+
+      <div class="mdl-layout-spacer"></div>
+
+      <form id="loginForm" name="loginForm" data-ng-submit="login.doLogin()" class="mdl-color-text--grey-400" autocomplete="off">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input
+            id="user"
+            name="user"
+            type="text"
+            class="mdl-textfield__input g-parent-border-color"
+            data-ng-model="login.user"
+            autofocus
+            autocomplete="off"
+            pattern="[a-z][a-z_0-9]{6,13}">
+          <label class="mdl-textfield__label g-parent-text-color" for="user">
+            <i class="material-icons">person</i>
+            <span class="mdl-textfield__label--text-icon">User Name</span>
+          </label>
+          <span class="mdl-textfield__error mdl-textfield__error--multiple">
+            <span class="mdl-textfield__error--sub" data-ng-show="!loginForm.user.$viewValue">Required field.</span>
+            <span class="mdl-textfield__error--sub" data-ng-show="loginForm.user.$error.pattern">
+              First must be a lowercase letter. Then lowercase letters, numbers or _ symbol between 7 and 14 characters.
+            </span>
+          </span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input
+            id="pass"
+            name="pass"
+            type="password"
+            class="mdl-textfield__input g-parent-border-color"
+            data-ng-model="login.pass"
+            autocomplete="off">
+          <label class="mdl-textfield__label g-parent-text-color" for="pass">
+            <i class="material-icons">lock</i>
+            <span class="mdl-textfield__label--text-icon">Password</span>
+          </label>
+          <span class="mdl-textfield__error mdl-textfield__error--multiple">
+            <span class="mdl-textfield__error--sub" data-ng-show="!loginForm.pass.$viewValue">Required field.</span>
+          </span>
+        </div>
+        <label for="store" class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input
+            id="store"
+            name="store"
+            type="checkbox"
+            class="mdl-checkbox__input g-parent-text-color"
+            data-ng-model="login.storeFlag"
+            autocomplete="off">
+          <span class="mdl-checkbox__label">Remember Me</span>
+        </label>
+        <button
+          type="submit"
+          data-ng-disabled="loginForm.$pristine || !loginForm.user.$viewValue || !loginForm.pass.$viewValue || loginForm.user.$invalid || loginForm.pass.$invalid"
+          class="mdl-button mdl-js-button mdl-js-ripple-effect g-parent-text-color">
+          LOGIN
+        </button>
+      </form>
+      <div class="mdl-layout-spacer"></div>
+      <div class="forgot-pass"><a class="forgot-pass-url" href="#">Forgot your password?</a></div>
+      <div class="mdl-layout-spacer"></div>
+    </div>
+  </main>
+</div>

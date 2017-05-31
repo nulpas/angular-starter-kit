@@ -1,0 +1,451 @@
+<div id="list-container" data-ng-class="{'editionModeList': list.editMode}">
+  <!-- # EDITOR LAYER -->
+  <div class="edition-mode-layer" data-ng-if="list.editMode">
+    <div class="edition-container" data-ng-init="vgTableFields = []">
+      <div class="edit-config-title">
+        <span class="title-text">List row edition</span>
+        <div class="list-sorting-bar">
+          <span class="order-label">Order:</span>
+          <div
+            id="sorting-fields-edit-mode"
+            class="sort-bar-fields"
+            data-ui-sortable="list.sortBarSortableOptions"
+            data-ng-model="list.viewTempConfig.orderFields">
+            <span class="field" data-ng-repeat="(sortFieldKey, sortField) in list.viewTempConfig['orderFields']">
+              <span class="mdl-chip__text">{{::list.getLabel(sortField.name)}}</span>
+              <button class="mdl-chip__action" data-ng-click="sortField['orderDescending'] = !sortField.orderDescending">
+                <i class="material-icons">{{sortField.orderDescending ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+              </button>
+              <button type="button" class="mdl-chip__action" data-ng-click="list.removeItemFromList(list.viewTempConfig['orderFields'], sortFieldKey)">
+                <i class="material-icons remove-action">cancel</i>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div>
+          <button
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+            data-ng-click="list['editMode'] = false; list.saveEditChanges();">
+            Accept
+          </button>
+          <button
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+            data-ng-click="list['editMode'] = false; list.cancelEditChanges();">
+            Cancel
+          </button>
+        </div>
+      </div>
+      <div class="row-container">
+        <div class="persist-checkbox-container">
+          <label for="permanentSave" class="mdl-checkbox mdl-js-checkbox persist-config" data-ng-class="{'is-checked' : list.persistConfig}">
+            <span class="mdl-checkbox__label">Persist configuration</span>
+            <input type="checkbox" id="permanentSave" class="mdl-checkbox__input" data-ng-model="list.persistConfig">
+          </label>
+        </div>
+        <ul class="mdl-list vehicles-list">
+          <li class="mdl-list__item mdl-shadow--6dp vehicle-list-li-element edition-mode">
+            <div class="mdl-list__item-primary-content list-item-container">
+              <div class="mdl-grid mdl-grid--no-spacing flex-item">
+
+                <!-- Row image -->
+                <div
+                  tabindex="1"
+                  class="mdl-cell mdl-cell--2-col vehicle-image-container"
+                  data-ng-class="{'hidden-image': !list.viewTempConfig['image']}">
+                  <img
+                    class="vehicle-image"
+                    data-ng-if="list.viewTempConfig['image']"
+                    src="images/placeholder/no-image.png"
+                    alt="Image">
+                  <div class="image-placeholder-close" data-ng-click="list.viewTempConfig['image'] = !list.viewTempConfig.image">
+                    <div>
+                      <i class="material-icons image-placeholder-close-icon">
+                        {{list.viewTempConfig['image'] ? 'keyboard_arrow_left' : 'keyboard_arrow_right'}}
+                      </i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Row body ( title + fields ) -->
+                <div class="mdl-cell mdl-cell--8-col vehicle-information-container">
+                  <div class="mdl-grid vehicle-information-container-div">
+                    <div class="mdl-cell mdl-cell--12-col vehicle-title-container">
+                      <div data-ng-repeat="sortField in list.viewTempConfig['orderFields']" class="title-chip">
+                        <span class="title-chip-text">{{::list.getLabel(sortField.name)}}</span>
+                      </div>
+                    </div>
+                    <div
+                      class="mdl-cell mdl-cell--12-col mdl-grid mdl-grid--no-spacing vehicle-fields-container"
+                      data-ui-sortable="list.fieldOptions"
+                      data-ng-model="list.viewTempConfig.fields">
+                      <div
+                        class="mdl-cell mdl-cell--4-col vehicle-field"
+                        data-ng-class="{'highlighted': field['highlight'] === '1', 'dim': field['highlight'] === '-1'}"
+                        data-ng-repeat="(fieldKey, field) in list.viewTempConfig.fields"
+                        data-ng-init="vgTableFields.push(field.name)"
+                        id="field--{{::fieldKey}}">
+                        <div class="field-actions">
+                          <span data-ng-click="field['highlight']='1'">
+                            <i id="actions-highlight-{{fieldKey}}" class="material-icons field-action-icon">brightness_high</i>
+                            <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="actions-highlight-{{fieldKey}}">Highlight</span>
+                          </span>
+                          <span data-ng-click="field['highlight']='0'">
+                            <i id="actions-medium-{{fieldKey}}" class="material-icons field-action-icon">brightness_medium</i>
+                            <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="actions-medium-{{fieldKey}}">Neutral</span>
+                          </span>
+                          <span data-ng-click="field['highlight']='-1'">
+                            <i id="actions-low-{{fieldKey}}" class="material-icons field-action-icon">brightness_low</i>
+                            <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="actions-low-{{fieldKey}}">Dim</span>
+                          </span>
+                          <span data-ng-click="list.removeItemFromList(list.viewTempConfig.fields, fieldKey); vgTableFields.splice(vgTableFields.indexOf(field.name), 1)">
+                            <i id="actions-close-{{fieldKey}}" class="material-icons field-action-icon">close</i>
+                            <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="actions-close-{{fieldKey}}">Remove Field</span>
+                          </span>
+                        </div>
+
+                        <div class="handle draggable"></div>
+
+                        <div class="text-container">
+                          <strong class="list-label">{{::list.getLabel(field.name)}}</strong>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Row actions -->
+                <div class="mdl-cell mdl-cell--2-col vehicle-actions-container">
+                  <div class="item-actions-1 list-item-tile vehicle-basic-actions"></div>
+                  <div class="item-actions-2 list-item-tile vehicle-list-actions"></div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="fields-container" data-ui-sortable="list.allFieldsBoxOptions" data-ng-model="list.partnerAvailableFields">
+        <span data-ng-repeat="field in list.partnerAvailableFields"
+              class="mdl-chip mdl-shadow--2dp edit-box-field"
+              data-ng-class="vgTableFields.includes(field.name) ? 'duplicated-chip-field' : 'available-chip-field'">
+          <span class="mdl-chip__text">{{::list.getLabel(field.name)}}</span>
+        </span>
+      </div>
+    </div>
+    <div class="screen-filler" data-ng-show="list.editMode" data-ng-click="list.cancelEditChanges();  list['editMode'] = false;"></div>
+  </div>
+  <div class="info-container">
+    <!-- # SORTING BAR -->
+    <div class="list-sorting-bar" data-ng-if="list.viewTempConfig['orderFields'].length > 0">
+      <span class="order-label">Order</span>
+      <div
+          id="sorting-fields"
+          class="sort-bar-fields"
+          data-ui-sortable="list.sortBarSortableOptions"
+          data-ng-model="list.viewTempConfig.orderFields">
+      <span class="field" data-ng-repeat="(sortFieldKey, sortField) in list.viewTempConfig['orderFields']">
+        <span class="mdl-chip__text">{{::list.getLabel(sortField.name)}}</span>
+        <button class="mdl-chip__action" data-ng-click="sortField['orderDescending'] = !sortField.orderDescending">
+          <i class="material-icons">{{sortField.orderDescending ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+        </button>
+        <button type="button" class="mdl-chip__action" data-ng-click="list.removeItemFromList(list.viewTempConfig['orderFields'], sortFieldKey)">
+          <i class="material-icons remove-action">cancel</i>
+        </button>
+      </span>
+      </div>
+      <div class="sorting-actions">
+        <button class="action-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-ng-click="list.sortList()">
+          <i class="material-icons">sort</i>
+        </button>
+      </div>
+    </div>
+
+    <!-- # TOTAL RESULTS -->
+    <div data-counter></div>
+  </div>
+
+  <!-- # FILTER BAR -->
+  <div id="list-filters" class="advanced-search-in-view" data-ng-if="list.filters && list.filters.length > 0">
+    <div class="advanced-search-in-view-label">
+      <span>Filtered by </span>
+    </div>
+    <div data-ng-repeat="filter in list.filters" class="advanced-search-in-view-element">
+      <span class="mdl-chip mdl-chip--deletable">
+        <span class="mdl-chip__text">{{filter.toString}}</span>
+        <button type="button" class="mdl-chip__action" data-ng-click="list.removeFromFilters(filter)">
+          <i class="material-icons">cancel</i>
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <!-- # LIST VIEW -->
+  <ul
+    class="mdl-list vehicles-list"
+    id="vehicles-list"
+    data-multiple-selection-zone
+    data-control="control">
+    <li
+      class="mdl-list__item mdl-shadow--6dp vehicle-list-li-element list-item-entering"
+      data-ng-repeat="(rowKey, row) in listView"
+      id="list-elem-{{::rowKey}}"
+      data-multiple-selection-item
+      data-ng-class="{'selecting-item': isSelecting}">
+      <div data-ng-class="{'selected-item': isSelected}"></div>
+      <div class="mdl-list__item-primary-content list-item-container">
+        <div class="mdl-grid mdl-grid--no-spacing flex-item">
+          <div
+            tabindex="1"
+            class="mdl-cell mdl-cell--2-col vehicle-image-container"
+            data-ng-class="::{'hidden-image': !list.viewConfig.image}">
+            <img
+              class="vehicle-image"
+              data-ng-if="::list.viewConfig.image"
+              src="http://uat.bcaimage.com/Document?docType=VehicleImage&docId=1741979&width=220"
+              alt="{{::list.getItemTitle(row, list.shared.TITLE)}}">
+          </div>
+          <div class="mdl-cell mdl-cell--8-col vehicle-information-container">
+            <div class="mdl-grid vehicle-information-container-div">
+              <div class="mdl-cell mdl-cell--12-col vehicle-title-container">
+                <span class="title-chip">{{::list.getItemTitle(row, list.shared.TITLE)}}</span>
+              </div>
+              <div class="mdl-cell mdl-cell--12-col mdl-grid mdl-grid--no-spacing vehicle-fields-container">
+                <div
+                  class="mdl-cell mdl-cell--4-col vehicle-field"
+                  data-ng-class="::{'highlighted': field.highlight == '1', 'dim': field.highlight == '-1'}"
+                  data-ng-repeat="(fieldKey, field) in list.viewConfig.fields"
+                  id="field--{{::rowKey}}--{{::fieldKey}}">
+                  <div class="text-container" data-ng-init="vgContentField = list.getField(row, field.name)">
+                    <strong class="truncate list-label">{{::list.getLabel(field.name)}}:</strong>
+                    <span
+                      id="content-{{::rowKey}}{{::fieldKey}}"
+                      class="truncate list-value"
+                      data-ng-if="::!field.editable">
+                      <span data-ng-if="::(field.format === 'date-time' || field.format === 'date')">
+                        {{::vgContentField | date: 'MMMM dd, yyyy, HH:mm:ss'}}
+                      </span>
+                      <span data-ng-if="::(field.format !== 'date-time' && field.format !== 'date')">
+                        {{::vgContentField}}
+                      </span>
+                    </span>
+                    <span
+                      data-ng-if="::field.editable"
+                      class="truncate list-value"
+                      editable-field
+                      data-entity="list.entity + '/' + row.id"
+                      data-field="field"
+                      data-field-id="key + '--' + fieldKey"
+                      data-field-model="vgContentField"
+                      data-row-field="row"
+                      data-view-model="listView"></span>
+                    <span class="mdl-tooltip mdl-tooltip--top"
+                      data-mdl-for="content-{{::rowKey}}{{::fieldKey}}">
+                      <span data-ng-if="::(field.format === 'date-time' || field.format === 'date')">
+                        {{::vgContentField | timeAgo}}
+                      </span>
+                      <span data-ng-if="::(field.format !== 'date-time' && field.format !== 'date')">
+                        {{::vgContentField}}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- ACTIONS CONTAINER -->
+          <div class="mdl-cell mdl-cell--2-col vehicle-actions-container">
+            <div class="item-actions-1 list-item-tile vehicle-basic-actions">
+              <button
+                id="config-{{::rowKey}}"
+                class="mdl-button mdl-js-button mdl-button--icon basic-action-button"
+                data-ng-click="list['editMode'] = true">
+                <i class="material-icons">edit</i>
+              </button>
+              <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="config-{{::rowKey}}">Edit Mode</span>
+              <span data-ng-repeat="(actionKey, action) in list.viewConfig['actions']">
+                <button
+                  id="action-{{::rowKey}}{{::actionKey}}"
+                  class="mdl-button mdl-js-button mdl-button--icon basic-action-button"
+                  data-ng-click="list.viewDefinition.detailsCallParameters.params.$skip = rowKey; list.viewDefinition.currentElement = rowKey"
+                  data-ui-sref="{{::action.state}}({{::list.transformActionParams(action.params, row)}})">
+                  <i class="material-icons">{{::action.icon}}</i>
+                </button>
+                <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="action-{{::rowKey}}{{::actionKey}}">{{::action.tooltip}}</span>
+              </span>
+              <button
+                id="more-{{::rowKey}}"
+                class="mdl-button mdl-js-button mdl-button--icon basic-action-button">
+                <i class="material-icons">more_vert</i>
+              </button>
+              <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="more-{{::rowKey}}">More...</span>
+            </div>
+            <div class="item-actions-2 list-item-tile vehicle-list-actions">
+              <div data-ng-if="::bpmn.isProcess && !list.noActions" class="bpmn-buttons-container">
+                <div
+                  data-ng-repeat="(moduleKey, module) in row.status"
+                  class="module-button"
+                  data-ng-if="module['processName'] === bpmn.params['param1']">
+                  <button
+                    id="module-{{::rowKey}}-{{::moduleKey}}"
+                    prevent-double-click
+                    class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                    data-ui-sref="app.vehicles.process.module({'param1': '{{::module['processName']}}', 'param2': '{{::module['moduleName']}}'})">
+                    <i class="material-icons">{{::list.getIcon(module.moduleName)}}</i>
+                  </button>
+                  <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="module-{{::rowKey}}-{{::moduleKey}}">
+                    {{::module.moduleName}}
+                  </span>
+                </div>
+              </div>
+              <div data-ng-if="::bpmn.isModule && !list.noActions" class="bpmn-buttons-container">
+                <div
+                  data-ng-repeat="(stateKey, state) in row.status"
+                  class="state-button"
+                  data-ng-if="state['moduleName'] === bpmn.params['param2']">
+                  <button
+                    id="state-{{::rowKey}}-{{::stateKey}}"
+                    prevent-double-click
+                    class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                    name="{{::(state['onHold'] ? 'onHold' : state['stateName'])}}"
+                    data-ui-sref="app.vehicles.process.module.state({'param1': '{{::state['processName']}}', 'param2': '{{::state['moduleName']}}', 'param3': '{{::(state['onHold'] ? 'onHold' : state['stateName'])}}'})">
+                    <i class="material-icons">{{::list.getIcon(state['onHold'] ? 'onHold' : state['stateName'])}}</i>
+                  </button>
+                  <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="state-{{::rowKey}}-{{::stateKey}}">
+                    {{::(state['onHold'] ? 'onHold' : state['stateName'])}}
+                  </span>
+                </div>
+              </div>
+              <div data-ng-if="::bpmn.isState && !list.noActions" class="bpmn-buttons-container">
+                <div class="action-button" data-ng-repeat="(actionKey, action) in list.bpmStateMethods">
+                  <button
+                      id="action-{{::rowKey}}-{{::actionKey}}-1"
+                      prevent-double-click
+                      class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                      data-ng-if="!action.params"
+                      data-ng-click="list.doBpmnAction(row, action)">
+                    <i class="material-icons">{{::list.getIcon(action.name)}}</i>
+                  </button>
+                  <button
+                      id="action-{{::rowKey}}-{{::actionKey}}-2"
+                      class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                      data-ng-if="action.params"
+                      data-ng-click="list.getBpmnParamsAction('#id' + rowKey + actionKey); list.getEnumFields(action.params)">
+                    <i class="material-icons">{{::list.getIcon(action.name)}}</i>
+                  </button>
+                  <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="action-{{::rowKey}}-{{::actionKey}}-1">
+                    {{::list.getLabel(action.name)}}
+                  </span>
+                  <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="action-{{::rowKey}}-{{::actionKey}}-2">
+                    {{::list.getLabel(action.name)}}
+                  </span>
+                  <dialog id="id{{::rowKey}}{{::actionKey}}" class="mdl-dialog">
+                    <h4 class="mdl-dialog__title">
+                      <span data-ng-repeat="sortField in list.viewConfig['orderFields']">
+                        {{::list.getField(row, sortField.name)}}
+                      </span>
+                    </h4>
+                    <form
+                      id="actionForm{{::rowKey}}{{::actionKey}}"
+                      prevent-double-click
+                      data-ng-init="vgShooter = false"
+                      name="actionForm{{::rowKey}}{{::actionKey}}"
+                      data-ng-submit="vgShooted = vgShooter ? list.doBpmnParamsAction(row.id, action) : ''">
+                      <div class="mdl-dialog__content">
+                        <div data-ng-repeat="(paramKey, param) in action.params">
+                          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <div
+                              data-ng-if="param.format && param.format === 'date-time'"
+                              ng-init="list.createDateTimePickerOptions(param)">
+                              <label class="mdl-textfield__label-date g-parent-text-color"
+                                for="{{::param.name}}-from">{{::param.name}}</label>
+                              <adm-dtp
+                                id="{{::param.name}}-from"
+                                ng-model="list.dateTimePickerOptions[param.name].default"
+                                options="list.dateTimePickerOptions[param.name]"
+                                on-change="list.onChangeDateTimeHandler(param.name, list.dateTimePickerOptions[param.name].default)">
+                              </adm-dtp>
+                              <span class="mdl-textfield__error mdl-textfield__error--multiple">
+                                <span
+                                  class="mdl-textfield__error--sub"
+                                  data-ng-if="::param.mandatory"
+                                  data-ng-show="::!list.actionRequest[param.name]">
+                                  Required field.
+                                </span>
+                              </span>
+                            </div>
+
+                            <div data-ng-if="::(!param.apiCall && !param.enum && (!param.format || param.type!=='string'))">
+                              <input
+                                id="{{::param.name}}"
+                                name="{{::param.name}}"
+                                class="mdl-textfield__input"
+                                pattern="{{::list.getPattern(param.type)}}"
+                                type="text" data-ng-model="list.actionRequest[param.name]">
+                              <label class="mdl-textfield__label g-parent-text-color" for="{{::param.name}}">
+                                <i class="material-icons">person</i>
+                                <span class="mdl-textfield__label--text-icon">{{::param.name}}</span>
+                              </label>
+                              <span class="mdl-textfield__error mdl-textfield__error--multiple">
+                                <span
+                                  class="mdl-textfield__error--sub"
+                                  data-ng-if="::(param.mandatory && !param.apiCall && !param.enum)"
+                                  data-ng-show="::(!this.$parent['actionForm' + rowKey + actionKey][param.name].$viewValue)">
+                                  Required field.
+                                </span>
+                              </span>
+                            </div>
+                            <div data-ng-if="::param.enum">
+                              <div data-bca-select="param" data-model="list.actionRequest[param.name]"></div>
+                              <span class="mdl-textfield__error mdl-textfield__error--multiple">
+                                <span
+                                  data-ng-if="::param.mandatory"
+                                  class="mdl-textfield__error--sub"
+                                  data-ng-show="::!list.actionRequest[param.name]">
+                                  Required field.
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="mdl-dialog__actions mdl-dialog__actions--full-width">
+                        <button type="submit" data-ng-click="vgShooter = true" class="mdl-button">
+                          {{::list.getLabel(action.name)}}
+                          <i class="material-icons">{{::list.getIcon(action.name)}}</i>
+                        </button>
+                        <button
+                            type="button"
+                            class="mdl-button close"
+                            data-ng-click="list.closeParamsAction('#id' + rowKey + actionKey)">
+                          Cancel
+                        </button>
+                      </div>
+                    </form>
+                  </dialog>
+                </div>
+              </div>
+              <!-- REMOVE THIS when the core is up to date please -->
+              <div data-ng-if="::list.viewTempConfig.publish" class="bpmn-buttons-container">
+                <div class="state-button">
+                  <button
+                    id="publish-{{::row}}"
+                    prevent-double-click
+                    class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored"
+                    name="button-publish"
+                    data-ng-click="list.saleEventFactory.executePublication(row)">
+                    <i class="material-icons">send</i>
+                  </button>
+                  <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="publish-{{::row}}">
+                    Publish Sale Event
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div id="last-element-list" class="last-element-list"></div>
+    </li>
+  </ul>
+  <div id="loading-more-data"  data-ng-show="list.viewDefinition.loadingData" class="mdl-spinner mdl-js-spinner is-active"></div>
+</div>

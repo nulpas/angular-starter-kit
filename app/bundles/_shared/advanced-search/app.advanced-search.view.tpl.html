@@ -1,0 +1,167 @@
+<!-- Advanced search view -->
+<div class="advanced-search">
+  <div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--10-col">
+        <h4 class="title">Search</h4>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect" data-ng-click="advancedSearch.goSearch()">
+        <span class="advanced-search-button-go">Go</span>
+      </button>
+    </div>
+    <div class="mdl-cell mdl-cell--1-col">
+      <button class="mdl-button mdl-js-button mdl-js-ripple-effect" data-ng-click="advancedSearch.resetSearch()">
+        <span class="advanced-search-button-go">Reset</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mdl-grid">
+    <!--Standard filters-->
+    <div
+      class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--12-col-phone element animate-filters"
+      data-ng-repeat="data in advancedSearch.viewConfig.searchableFields | filter:{searchable:{standard:true}}">
+      <data-num-filter
+        data-ng-if="data.description === 'integer' || data.description === 'double'"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-num-filter>
+      <data-text-filter
+        data-ng-if="!data.enum && data.description === 'string' || (data.$ref && data.description === 'apiCall')"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-text-filter>
+      <data-date-filter
+        data-ng-if="data.description === 'DateTime'"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-date-filter>
+      <data-enum-filter
+        data-ng-if="(data.enum && data.description === 'string')"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-enum-filter>
+      <data-boolean-filter
+        data-ng-if="data.description === 'boolean'"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-boolean-filter>
+    </div>
+    <!--Selected filters-->
+    <div
+      class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--12-col-phone element animate-filters"
+      data-ng-repeat="data in advancedSearch.viewConfig.searchableFields | filter:{searchable:{standard:false, selected:true}}">
+      <data-num-filter
+        data-ng-if="data.description === 'integer' || data.description === 'double'"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-num-filter>
+      <data-text-filter
+        data-ng-if="!data.enum && data.description === 'string' || (data.$ref && data.description === 'apiCall')"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-text-filter>
+      <data-date-filter
+        data-ng-if="data.description === 'DateTime'"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-date-filter>
+      <data-enum-filter
+        data-ng-if="(data.enum && data.description === 'string')"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-enum-filter>
+      <data-boolean-filter
+        data-ng-if="data.description === 'boolean'"
+        data-data="data"
+        data-add="advancedSearch.addFilter"
+        data-remove="advancedSearch.removeFilter"
+        data-control="data.control"
+        data-save="advancedSearch.saveConfig">
+      </data-boolean-filter>
+    </div>
+  </div>
+  <div class="mdl-grid">
+    <!--Non-selected filters-->
+    <div
+      class="mdl-cell mdl-cell--4-col mdl-cell--6-col-tablet mdl-cell--12-col-phone element"
+      data-ng-if="advancedSearch.viewConfig.searchableFields.length !== 0">
+        <div class="md-primary mdl-card-adv-search mdl-shadow--2dp">
+            <div
+              class="mdl-card-adv-search__title"
+              data-ng-class="{'cardDragHandler md-primary': true}"
+              data-ng-click="advancedSearch.moreCollapsed=!advancedSearch.moreCollapsed">
+                <div class="filter-title">
+                    <i class="mdl-card-adv-search__avatar material-icons">assignment</i>
+                    <span class="mdl-card-adv-search__title-text">More</span>
+                </div>
+            </div>
+            <div
+              class="md-inline-form slide"
+              data-ng-hide="advancedSearch.moreCollapsed">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
+                    <label class="mdl-button mdl-js-button mdl-button--icon" for="more-search">
+                        <i class="material-icons">search</i>
+                    </label>
+                    <div class="mdl-textfield__expandable-holder">
+                        <input
+                          class="mdl-textfield__input"
+                          type="text"
+                          id="more-search"
+                          data-ng-model="advancedSearch.searchMore.title">
+                        <label class="mdl-textfield__label" for="more-search">Search More</label>
+                    </div>
+                </div>
+                <ul class="demo-list-control mdl-list">
+                    <li class="mdl-list__item checkbox-item animate-filters" data-ng-repeat="data in advancedSearch.viewConfig.searchableFields | filter:advancedSearch.searchMore">
+                        <span class="mdl-list__item-secondary-action">
+                          <label
+                            class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+                            data-ng-class="{'is-checked' : data.searchable.selected}"
+                            for="adv-search-ckb-{{::data.name}}">
+                            <input
+                              type="checkbox"
+                              id="adv-search-ckb-{{::data.name}}"
+                              class="mdl-checkbox__input"
+                              data-ng-model="data.searchable.selected"
+                              data-ng-change="advancedSearch.saveConfig(data)">
+                            <span class="mdl-checkbox__label">
+                              {{::data.title}}
+                            </span>
+                          </label>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="backdrop" data-ng-click="advancedSearch.goSearch()"></div>

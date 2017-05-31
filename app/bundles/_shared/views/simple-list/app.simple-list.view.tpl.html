@@ -1,0 +1,336 @@
+<div class="background-view-simple-list" data-multiple-selection-zone data-control="control" data-ng-class="table.isPartialView ? 'partial-list' : ''">
+  <div class="info-container" data-ng-if="!table.isPartialView">
+    <!-- # SORTING BAR -->
+    <div class="list-sorting-bar">
+      <span class="order-label">Order</span>
+      <div
+        id="sorting-fields"
+        class="sort-bar-fields"
+        data-ui-sortable="table.sortBarSortableOptions"
+        data-ng-model="table.viewTempConfig.orderFields">
+      <span class="field" data-ng-repeat="(sortFieldKey, sortField) in table.viewTempConfig['orderFields']">
+        <span class="mdl-chip__text">{{::table.getLabel(sortField.name)}}</span>
+        <button class="mdl-chip__action" data-ng-click="sortField['orderDescending'] = !sortField.orderDescending">
+          <i class="material-icons">{{sortField.orderDescending ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+        </button>
+        <button type="button" class="mdl-chip__action" data-ng-click="table.removeItemFromList(table.viewTempConfig['orderFields'], sortFieldKey)">
+          <i class="material-icons remove-action">cancel</i>
+        </button>
+      </span>
+      </div>
+      <div class="sorting-actions">
+        <button class="action-button mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon" data-ng-click="table.sortList()">
+          <i class="material-icons">sort</i>
+        </button>
+      </div>
+    </div>
+
+    <!-- # TOTAL RESULTS -->
+    <div data-counter></div>
+  </div>
+  <!-- # FILTER BAR -->
+  <div
+    id="simple-list-filters"
+    class="advanced-search-in-view"
+    data-ng-if="!table.editMode && table.filters && table.filters.length > 0">
+    <div class="advanced-search-in-view-label">
+      <span>Filtered by</span>
+    </div>
+    <div data-ng-repeat="filter in table.filters" class="advanced-search-in-view-element">
+      <span class="mdl-chip mdl-chip--deletable">
+        <span class="mdl-chip__text"><strong>{{::filter.toString}}</strong></span>
+        <button type="button" class="mdl-chip__action" data-ng-click="table.removeFromFilters(filter)">
+          <i class="material-icons">cancel</i>
+        </button>
+      </span>
+    </div>
+  </div>
+
+  <!-- # EDITOR LAYER -->
+  <div class="edition-mode-layer" data-ng-if="table.editMode" data-ng-init="vgTableFields = []">
+    <div class="edition-container">
+      <div class="edit-config-title">
+        <span class="title-text">Column edition</span>
+        <div class="list-sorting-bar">
+          <span class="order-label">Order:</span>
+          <div
+            id="sorting-fields-edit-mode"
+            class="sort-bar-fields"
+            data-ui-sortable="table.sortBarSortableOptions"
+            data-ng-model="table.viewTempConfig.orderFields">
+            <span class="field" data-ng-repeat="(sortFieldKey, sortField) in table.viewTempConfig['orderFields']">
+              <span class="mdl-chip__text">{{::table.getLabel(sortField.name)}}</span>
+              <button class="mdl-chip__action" data-ng-click="sortField['orderDescending'] = !sortField.orderDescending">
+                <i class="material-icons">{{sortField.orderDescending ? 'arrow_drop_down' : 'arrow_drop_up'}}</i>
+              </button>
+              <button type="button" class="mdl-chip__action" data-ng-click="table.removeItemFromList(table.viewTempConfig['orderFields'], sortFieldKey)">
+                <i class="material-icons remove-action">cancel</i>
+              </button>
+            </span>
+          </div>
+        </div>
+        <div>
+          <button
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+            data-ng-click="table.saveEditChanges()">
+            Accept
+          </button>
+          <button
+            class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored"
+            data-ng-click="table.cancelEditChanges()">
+            Cancel
+          </button>
+        </div>
+      </div>
+
+      <div class="active-fields-container">
+        <div class="persist-checkbox-container">
+          <label
+            for="permanentSave"
+            class="mdl-checkbox mdl-js-checkbox persist-config"
+            data-ng-class="{'is-checked' : table.persistConfig}">
+            <span class="mdl-checkbox__label">Persist configuration</span>
+            <input type="checkbox" id="permanentSave" class="mdl-checkbox__input" data-ng-model="table.persistConfig">
+          </label>
+        </div>
+        <div
+          class="sortable-fields"
+          data-ui-sortable="table.sortableActiveColumnsOptions"
+          data-ng-model="table.viewTempConfig.fields">
+          <span
+            data-ng-repeat="(fieldIndex, field) in table.viewTempConfig.fields"
+            data-ng-init="vgTableFields.push(field.name)"
+            class="mdl-chip mdl-chip--deletable mdl-shadow--2dp edit-box-field log-field title-field"
+            id="column-{{field.name}}">
+            <span class="mdl-chip__text">{{table.getLabel(field.name)}}</span>
+            <button
+              type="button"
+              class="mdl-chip__action"
+              data-ng-click="table.disableColumn(field); vgTableFields.splice(vgTableFields.indexOf(field.name), 1)">
+              <i class="material-icons">cancel</i>
+            </button>
+          </span>
+        </div>
+      </div>
+      <div
+        id="inactiveFields"
+        class="fields-container sortable-fields"
+        data-ui-sortable="table.sortableDisabledColumnsOptions"
+        data-ng-model="table.partnerAvailableFields">
+        <span
+          data-ng-repeat="field in table.partnerAvailableFields"
+          class="mdl-chip mdl-shadow--2dp edit-box-field"
+          data-ng-class="vgTableFields.includes(field.name) ? 'duplicated-chip-field' : 'available-chip-field'">
+          <span class="mdl-chip__text">{{table.getLabel(field.name)}}</span>
+        </span>
+      </div>
+    </div>
+    <div
+      class="screen-filler"
+      data-ng-show="table['editMode']"
+      data-ng-click="table.cancelEditChanges(); table['editMode'] = false;">
+    </div>
+  </div>
+
+  <!-- BQL -->
+  <form
+    class="fromBql"
+    name="fromBql"
+    data-ng-submit="$event.preventDefault()"
+    data-ng-if="table.isPartialView">
+    <input
+      type="text"
+      class="advanced-search-input"
+      name="query"
+      placeholder="Advanced Search..."
+      data-ng-model="vgQuery"
+      data-ng-keydown="table.blurOnEnter($event, vgQuery)">
+    <button
+      id="resetBQL"
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-show="table.queryBql().length"
+      data-ng-click="vgQuery = ''; table.queryBql(vgQuery); table.sortList();">
+      <i class="material-icons">close</i>
+    </button>
+  </form>
+  <span class="total-results-container partial-counter" data-ng-if="table.isPartialView">
+    <strong data-ng-if="table.counter">{{table.simpleListView.length}}/{{table.simpleListView.length > table.counter ? table.simpleListView.length : table.counter}} results.</strong>
+    <strong data-ng-if="!table.counter">{{table.simpleListView.length}}/{{table.simpleListView.length}} results.</strong>
+  </span>
+  <!-- # LIST VIEW -->
+  <ul
+    class="mdl-list log-wrapper"
+    id="vehicles-list"
+    data-ng-if="table.simpleListView"
+    data-ng-model="table.simpleListView"
+    data-ng-class="table.viewConfig.uiSortableVariableName.toLowerCase()"
+    data-ui-sortable="table.currentUlSortableOption">
+    <li class="mdl-list__item mdl-menu__item--full-bleed-divider">
+      <div
+        data-ui-sortable="table.sortableColumnHeaders"
+        data-ng-model="table.viewConfig.fields"
+        class="mdl-list__item-primary-content">
+        <div
+          data-ng-repeat="(fieldKey, field) in table.viewConfig.fields track by field.name"
+          class="log-field title-field mdl-data-table__cell--non-numeric sort asc"
+          data-ng-click="table.changeOrder(field)"
+          data-column-id="{{::fieldKey}}"
+          id="title-{{::fieldKey}}-{{::field.name}}">
+          {{::table.getLabel(field.name)}}
+          <button class="mdl-button mdl-js-button mdl-button--icon" data-ng-if="table.isASortCriteria(field)">
+            <i id="orderBy{{::field.name}}Asc" class="icon material-icons">
+              {{table.getSortOrder(field) ? 'arrow_drop_down' : 'arrow_drop_up'}}
+            </i>
+          </button>
+          <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="title-{{::fieldKey}}-{{::field.name}}">
+            {{::table.getLabel(field.name)}}
+          </span>
+        </div>
+      </div>
+      <div data-ng-if="!table.isPartialView" class="last-column" data-ng-style="{width: table.viewConfig.actions.length * 80}">
+        <i class="material-icons">more_vert</i>
+      </div>
+    </li>
+    <li
+      class="mdl-list__item simple_list_item"
+      data-ng-repeat="(key, row) in table.simpleListView"
+      data-ng-class-odd="'odd'"
+      id="simple-list-elem-{{::key}}"
+      data-multiple-selection-item
+      data-ng-class="{'selecting-item': isSelecting, 'edition-mode': row.editMode}">
+      <div data-ng-class="{'selected-item': isSelected}"></div>
+      <div data-ng-class="{'ui-sortable-rows-handle': !table.viewDefinition.currentlyUsingSortable && table.viewConfig.activateUiSortable && !table.viewDefinition.selectMode
+        && (!table.viewDefinition.editModeDisabled || table.isEditModeException())}"></div>
+      <span class="mdl-list__item-primary-content">
+        <span
+          class="log-field"
+          data-ng-repeat="(fieldKey, field) in table.viewConfig.fields track by field.name"
+          data-column-id="{{::fieldKey}}">
+          <!-- Field type selector -->
+          <!-- Default -->
+          <span data-ng-if="::(field.displayAs === 'string' || !field.displayAs)">
+            <span data-ng-if="::!field.editable">{{table.getField(row, field.name)}}</span>
+            <span
+              data-ng-init="vg.fieldModel = table.getField(row, field.name)"
+              data-ng-if="::field.editable"
+              editable-field
+              data-entity="table.entity + '/' + row.id"
+              data-field="field"
+              data-field-id="key + '--' + fieldKey"
+              data-field-model="vg.fieldModel"
+              data-row-field="row"></span>
+          </span>
+          <!-- Index -->
+          <span data-ng-if="::field.displayAs === 'index'">
+            {{key + 1}}
+          </span>
+          <!-- Array -->
+          <span class="type-array" data-ng-if="::field.displayAs === 'array'">
+            <span data-ng-repeat="(arrayFieldKey, arrayField) in table.getField(row, field.name) track by arrayFieldKey">
+              {{::arrayField}}
+            </span>
+          </span>
+          <!-- Price -->
+          <span id="price-{{::key}}{{::fieldKey}}" data-ng-if="::(field.displayAs === 'price')">
+            {{(table.getField(row, field.name) | number:2)}}
+          </span>
+          <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="price-{{::key}}{{::fieldKey}}">
+            {{::table.getField(row, field.name)}}
+          </span>
+          <!-- Date -->
+          <span id="date-{{::key}}{{::fieldKey}}" data-ng-if="::(field.displayAs === 'date' || field.format === 'date-time')">
+            {{::(table.getField(row, field.name) | date: 'MMMM dd, yyyy, HH:mm:ss')}}
+          </span>
+          <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="date-{{::key}}{{::fieldKey}}">
+            {{::table.getField(row, field.name) | timeAgo}}
+          </span>
+          <!-- Status -->
+          <span data-ng-if="::field.displayAs === 'tag'" class="mdl-button log-status" data-ng-class="::row[field.name].toLowerCase()">
+            {{::row[field.name]}}
+          </span>
+          <!-- Action #TODO: We must move all actions to viewConfig.actions list-->
+          <span data-ng-if="::field.displayAs === 'button'">
+            <button
+              class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect dialog-button"
+              data-ng-if="::field.state"
+              data-ui-sref="{{::field.state}}({{::table.transformActionParams(field.params, row)}})"
+              data-ng-class = "::field.name.toLowerCase()"
+              data-ng-disabled="table.viewDefinition.editModeDisabled
+                && (!table.viewDefinition.editModeExceptions || table.viewDefinition.editModeExceptions.indexOf(field.name) !== -1)">
+              <!-- Rich Tooltip -->
+              <span id="details-{{::key}}-state-button" class="icon material-icons">{{::field.icon || 'find_in_page'}}</span>
+              <span class="mdl-tooltip" data-mdl-for="details-{{::key}}-state-button">{{::field.name}}</span>
+            </button>
+            <button
+              class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect dialog-button"
+              data-ng-if="::!field.state"
+              prevent-double-click
+              data-ng-click = "table[field.action](row)"
+              data-ng-class = "::field.name.toLowerCase()"
+              data-ng-disabled="table.viewDefinition.editModeDisabled
+                && (!table.viewDefinition.editModeExceptions || table.viewDefinition.editModeExceptions.indexOf(field.name) === -1)">
+              <!-- Rich Tooltip -->
+              <span id="details-{{::key}}-button" class="icon material-icons">{{::field.icon || 'find_in_page'}}</span>
+              <span class="mdl-tooltip" data-mdl-for="details-{{::key}}-button">{{::field.name}}</span>
+            </button>
+          </span>
+        </span>
+        <span class="last-column" data-ng-style="::{width: table.viewConfig.actions.length * 80}">
+          <span data-ng-if="::!table.isPartialView">
+            <button class="mdl-button mdl-js-button mdl-button--icon" data-ng-click="table.changeEditMode()">
+              <i class="material-icons icon-title">mode_edit</i>
+            </button>
+          </span>
+          <span data-ng-if="::(!table.isPartialView && table.viewConfig.publish)">
+            <button class="mdl-button mdl-js-button mdl-button--icon" data-ng-click="table.saleEventFactory.executePublication(row)">
+              <i class="material-icons icon-title">send</i>
+            </button>
+          </span>
+          <span data-ng-repeat="(actionKey, action) in table.viewConfig.actions">
+            <button
+              id="action-{{::key}}{{::actionKey}}"
+              class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect dialog-button"
+              data-ng-if="::action.state"
+              data-ng-click="table.viewDefinition.detailsCallParameters.params.$skip = key; table.viewDefinition.currentElement = key; table.counter = table.counter - 1;"
+              data-ui-sref="{{::action.state}}({{::table.transformActionParams(action.params, row)}})"
+              data-ng-class = "::action.name.toLowerCase()">
+              <!-- Rich Tooltip -->
+              <span id="details-{{::key}}-state-button" class="icon material-icons">{{::action.icon || 'find_in_page'}}</span>
+              <span class="mdl-tooltip" data-mdl-for="details-{{::key}}-state-button">{{::action.name}}</span>
+            </button>
+            <button
+              id="action-{{::key}}{{::actionKey}}"
+              class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect dialog-button"
+              data-ng-if="::!action.state"
+              data-ng-click = "table[action.action](row); table.counter = table.counter - 1;"
+              data-ng-class = "::action.name.toLowerCase()">
+              <!-- Rich Tooltip -->
+              <span id="details-{{::key}}-button" class="icon material-icons">{{::action.icon || 'find_in_page'}}</span>
+              <span class="mdl-tooltip" data-mdl-for="details-{{::key}}-button">{{::action.name}}</span>
+            </button>
+            <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="action-{{::key}}{{::actionKey}}">{{::action.tooltip}}</span>
+          </span>
+        </span>
+      </span>
+    </li>
+    <li style="display: flex; justify-content: center">
+      <button
+          class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--colored"
+          data-ng-if="table.isPartialView && !table.allItemsLoaded && table.counter"
+          data-ng-click="table.loadMore()">
+        Load more
+      </button>
+    </li>
+
+  </ul>
+
+  <div id="last-element-simple-list" class="last-element-list"></div>
+  <div
+    id="loading-more-data"
+    data-ng-if="!table.isPartialView"
+    data-ng-show="table.viewDefinition.loadingData"
+    class="mdl-spinner mdl-js-spinner is-active">
+  </div>
+
+
+</div>

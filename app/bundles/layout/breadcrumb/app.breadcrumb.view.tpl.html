@@ -1,0 +1,261 @@
+<div class="path">
+  <a
+    data-ng-repeat="path in breadcrumb.location.url().split('/').slice(1)"
+    data-ng-init="pathIndex = $index"
+    href="{{breadcrumb.location.url().split('/').slice(1).slice(0, 1 + pathIndex).join('/')}}">
+    / {{path}}
+  </a>
+
+</div>
+
+<form class="fromBql" name="fromBql"
+  data-ng-submit="$event.preventDefault()">
+  <input
+    type="text"
+    id="advanced-search-input"
+    name="query"
+    placeholder="Advanced Search..."
+    data-ng-model="breadcrumb.queryBql"
+    data-ng-model-options="{getterSetter: true, updateOn: 'blur' }"
+    data-ng-keydown="breadcrumb.blurOnEnter($event)">
+  <button
+    id="resetBQL"
+    class="mdl-button mdl-js-button mdl-button--icon"
+    data-ng-show="breadcrumb.queryBql().length"
+    data-ng-click="breadcrumb.queryBql('')">
+    <i class="material-icons">close</i>
+  </button>
+</form>
+
+<div class="buttonBar">
+  <div
+    class="breadcrumb_buttons"
+    data-ng-if="breadcrumb.state.current.name === 'app.vehicleDetails'
+    || breadcrumb.state.current.name === 'app.saleEventDetails'
+    || breadcrumb.state.current.name === 'app.packageDetails'
+    || breadcrumb.state.current.name === 'app.userDetails'
+    || breadcrumb.state.current.name.includes('createSaleEvent')
+    || breadcrumb.state.current.name.includes('createPackage')">
+    <span data-ng-if="breadcrumb.viewConfig.selectedItems.length">
+      {{breadcrumb.viewConfig.selectedListIndex + 1}}/{{breadcrumb.viewConfig.selectedItems.length}}
+    </span>
+    <span data-ng-if="breadcrumb.state.current.name === 'app.vehicleDetails' && !breadcrumb.viewConfig.selectedItems.length">
+      {{breadcrumb.viewConfig.currentElement +1}}/{{breadcrumb.viewConfig.totalElements}}
+    </span>
+    <button
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-click="breadcrumb.details.detailsSaveConfig()"
+      data-aria-label="Save view configuration"
+      id="exportDetailsButton">
+      <i class="material-icons">file_download</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="exportDetailsButton">Save view configuration</span>
+
+    <button
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-click="breadcrumb.details.moveFields = !breadcrumb.details.moveFields; breadcrumb.details.editDetails = false"
+      data-aria-label="Reorder Details"
+      id="reorderDetailsButton"
+      data-ng-class="{'mdl-button--colored': breadcrumb.details.moveFields}">
+      <i class="material-icons">open_with</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="reorderDetailsButton">Reorder Details</span>
+
+    <button
+      data-ng-if="!breadcrumb.editPackage.packageDetailsData || (breadcrumb.editPackage.packageDetailsData.packageStatus !== 'Sold' && breadcrumb.editPackage.packageDetailsData.packageStatus !== 'Cancelled')"
+      data-ng-hide="breadcrumb.viewConfig.editModeDisabled"
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-click="breadcrumb.details.editForm()"
+      data-aria-label="Edit Details"
+      data-ng-class="{'mdl-button--colored': breadcrumb.details.editDetails}"
+      id="editDetailsButton">
+      <i class="material-icons">mode_edit</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="editDetailsButton">Edit Details</span>
+    <button
+      data-ng-if="!breadcrumb.editPackage.packageDetailsData || (breadcrumb.editPackage.packageDetailsData.packageStatus !== 'Sold' && breadcrumb.editPackage.packageDetailsData.packageStatus !== 'Cancelled')"
+      data-ng-hide="breadcrumb.viewConfig.editModeDisabled"
+      id="detailsSaveChangesButton"
+      class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+      data-ng-click="breadcrumb.details.updateEntity()"
+      style="color: green">
+      <i class="material-icons">check</i>
+      <span class="mdl-tooltip" data-mdl-for="detailsSaveChangesButton">Save changes</span>
+    </button>
+    <button
+      data-ng-if="!breadcrumb.editPackage.packageDetailsData || (breadcrumb.editPackage.packageDetailsData.packageStatus !== 'Sold' && breadcrumb.editPackage.packageDetailsData.packageStatus !== 'Cancelled')"
+      data-ng-hide="breadcrumb.viewConfig.editModeDisabled"
+      id="detailsRevertChangesButton"
+      class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+      data-ng-click="breadcrumb.details.resetEntity()"
+      style="color: darkred">
+      <i class="material-icons">close</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="detailsRevertChangesButton">Revert changes</span>
+  </div>
+
+  <div
+    data-ng-if="breadcrumb.state.current.name === 'app.vehicles'
+    || breadcrumb.state.current.name.includes('app.saleEvents')
+    || breadcrumb.state.current.name === 'app.log.import'
+    || breadcrumb.state.current.name === 'app.vehicles.process'
+    || breadcrumb.state.current.name === 'app.vehicles.process.module'
+    || breadcrumb.state.current.name === 'app.vehicles.process.module.state'
+    || breadcrumb.state.current.name === 'app.packages'
+    || breadcrumb.state.current.name === 'app.users'
+    || breadcrumb.state.current.name === 'app.roles'
+    || breadcrumb.state.params.param3 === 'allSaleEvents'"
+    class="breadcrumb_buttons">
+    <span data-ng-if="!breadcrumb.state.current.name.includes('app.log') && breadcrumb.state.current.name !== 'app.users' && breadcrumb.state.current.name !== 'app.roles'">
+      <span id="selectedVehiclesText" data-ng-if="breadcrumb.viewConfig.selectMode">
+        {{breadcrumb.viewConfig.selectedItems.length}} selected items
+      </span>
+
+      <button
+        class="mdl-button mdl-js-button mdl-button--icon"
+        id="add-button"
+        data-ui-sref="{{breadcrumb.state.current.name === 'app.packages' ? 'app.createPackage' : 'app.createSaleEvent'}}"
+        data-ng-if="breadcrumb.state.current.name === 'app.packages'
+        || breadcrumb.state.current.name === 'app.saleEvents'">
+        <i class="material-icons">add</i>
+      </button>
+      <span class="mdl-tooltip" data-mdl-for="add-button">{{breadcrumb.state.current.name === 'app.packages' ? 'New Package' : 'New Sale Event'}}</span>
+      <label
+        data-ng-show="breadcrumb.viewConfig.selectMode"
+        class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+        for="selectAll"
+        id="selectAllLabel"
+        data-ng-class="{'is-checked': breadcrumb.viewConfig.selectAll}">
+        <input
+          type="checkbox"
+          id="selectAll"
+          class="mdl-checkbox__input"
+          data-aria-label="Select All"
+          data-ng-click="breadcrumb.switchSelectAll()"
+          data-ng-checked="breadcrumb.viewConfig.selectAll">
+      </label>
+      <span class="mdl-tooltip" data-mdl-for="selectAllLabel">Select all</span>
+
+      <label
+        class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"
+        for="selectModeCheckbox"
+        id="selectModeCheckboxLabel"
+        data-ng-class="{'is-checked': breadcrumb.viewConfig.selectMode}">
+        <input
+          type="checkbox"
+          id="selectModeCheckbox"
+          data-aria-label="Select Mode"
+          class="mdl-checkbox__input"
+          data-ng-click="breadcrumb.switchSelectMode()"
+          data-ng-checked="breadcrumb.viewConfig.selectMode">
+      </label>
+      <span class="mdl-tooltip" data-mdl-for="selectModeCheckboxLabel">Select Mode</span>
+
+      <button id="exportExcelButton" class="mdl-button mdl-js-button mdl-button--icon">
+        <i class="material-icons">file_download</i>
+      </button>
+
+      <ul
+        class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+        data-mdl-for="exportExcelButton">
+        <li class="mdl-menu__item" data-ng-click="breadcrumb.exportToExcel()">Export current fields</li>
+        <li class="mdl-menu__item" data-ng-click="breadcrumb.exportToExcel(true)">Export all fields</li>
+      </ul>
+
+      <span class="mdl-tooltip mdl-tooltip--top" data-mdl-for="exportExcelButton">
+        Export List to Excel
+      </span>
+
+      <button
+        data-ng-class="{'mdl-button--colored': breadcrumb.viewConfig.type === breadcrumb._shared.LIST_VIEW}"
+        class="mdl-button mdl-js-button mdl-button--icon"
+        data-ng-click="breadcrumb.changeListType(breadcrumb._shared.LIST_VIEW)"
+        data-aria-label="List view"
+        id="listViewButton">
+        <i class="material-icons">view_list</i>
+      </button>
+      <span class="mdl-tooltip" data-mdl-for="listViewButton">List view</span>
+
+      <button
+        data-ng-class="{'mdl-button--colored': breadcrumb.viewConfig.type === breadcrumb._shared.GRID_VIEW}"
+        class="mdl-button mdl-js-button mdl-button--icon"
+        data-ng-click="breadcrumb.changeListType(breadcrumb._shared.GRID_VIEW)"
+        data-aria-label="Grid view"
+        id="GridButton">
+        <i class="material-icons">view_module</i>
+      </button>
+      <span class="mdl-tooltip" data-mdl-for="GridButton">Grid view</span>
+
+      <button
+        data-ng-class="{'mdl-button--colored': breadcrumb.viewConfig.type === breadcrumb._shared.GRID_MINI_VIEW}"
+        class="mdl-button mdl-js-button mdl-button--icon"
+        data-ng-click="breadcrumb.changeListType(breadcrumb._shared.GRID_MINI_VIEW)"
+        data-aria-label="Small icons grid view"
+        id="smallGridButton">
+        <i class="material-icons">view_comfy</i>
+      </button>
+      <span class="mdl-tooltip" data-mdl-for="smallGridButton">Small icons grid view</span>
+
+      <button
+        data-ng-class="{'mdl-button--colored': breadcrumb.viewConfig.type === breadcrumb._shared.SIMPLE_LIST_VIEW}"
+        class="mdl-button mdl-js-button mdl-button--icon"
+        data-ng-click="breadcrumb.changeListType(breadcrumb._shared.SIMPLE_LIST_VIEW)"
+        data-aria-label="Simple list view"
+        id="simpleListButton">
+        <i class="material-icons">drag_handle</i>
+      </button>
+      <span class="mdl-tooltip" data-mdl-for="simpleListButton">Simple list view</span>
+    </span>
+    <button
+      id="detailsButtonVehicle"
+      data-ng-if="breadcrumb.state.current.name !== 'app.saleEvents' && !breadcrumb.state.includes('app.log')"
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-show="breadcrumb.viewConfig.selectedItems.length"
+      data-ui-sref="app.vehicleDetails({vehicleId: breadcrumb.viewConfig.selectedItems[0].id, index: 0})">
+      <i class="material-icons">more</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="detailsButtonVehicle">Details</span>
+
+    <button
+      id="detailsButtonSaleEvent"
+      data-ng-if="breadcrumb.state.current.name === 'app.saleEvents'"
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-show="breadcrumb.viewConfig.selectedItems.length"
+      data-ui-sref="app.saleEventDetails({saleEventId: breadcrumb.viewConfig.selectedItems[0].id, index: 0})">
+      <i class="material-icons">more</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="detailsButtonSaleEvent">Details</span>
+
+    <button
+      id="advancedSearchButton"
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-click="breadcrumb.toggleAdvancedSearch(breadcrumb.viewConfig.showAdvancedSearch);">
+      <i class="material-icons">search</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="advancedSearchButton">Search</span>
+  </div>
+
+  <div
+    data-ng-if="(breadcrumb.state.current.name.includes('app.settings'))&& !(breadcrumb.state.params.param2 == 'saleEvents')"
+    class="breadcrumb_buttons">
+    <button
+      id="saveChangesButton"
+      class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+      data-ng-click="breadcrumb.viewConfig.settings.saveDataChanges()"
+      data-aria-label="List view"
+      style="color: green">
+      <i class="material-icons">check</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="saveChangesButton">Save changes</span>
+
+    <button
+      id="revertChangesButton"
+      class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect"
+      data-ng-click="breadcrumb.viewConfig.settings.cancelDataChanges()"
+      data-aria-label="List view"
+      style="color: darkred">
+      <i class="material-icons">close</i>
+    </button>
+    <span class="mdl-tooltip" data-mdl-for="revertChangesButton">Revert changes</span>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+.editable-field-wrapper {
+  .changing-type.ng-leave-active {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .editable-field-button {
+    padding: 0;
+    width: 100%;
+    height: 20px;
+    line-height: 20px;
+    text-align: right;
+  }
+
+  .editable-field-textfield {
+    height: inherit;
+    padding: 0;
+
+    .mdl-textfield__input {
+      font-size: 0.9em;
+      padding: 0;
+      margin: 4px 0;
+      text-align: right;
+    }
+  }
+}
+

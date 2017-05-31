@@ -1,0 +1,11 @@
+<label
+  data-ng-class="{'is-checked': ctrl.checked, 'is-disabled': ctrl.disabled}"
+  class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect"  >
+  <input
+    type="checkbox"
+    class="mdl-checkbox__input"
+    data-ng-disabled="ctrl.disabled"
+    data-ng-click="ctrl.onClick({checked: ctrl.checked})"
+    data-ng-checked="ctrl.checked"/>
+  <span class="mdl-checkbox__label">{{ctrl.text}}</span>
+</label>

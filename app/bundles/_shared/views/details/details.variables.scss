@@ -1,0 +1,20 @@
+//Color related variables. Tag: cl
+$cl-accept-drag: rgba(92, 204, 0, 0.5);
+$cl-outline-section: rgba(0, 0, 0, 0.2);
+
+//Position related variables. Tag: ps
+$ps-display-autocomplete-wrap: inline-block !important;
+$ps-display-autocomplete: inline-flex !important;
+
+//Box model related variables. Tag: bm
+$bm-placeHolderHeight: 72px;
+$bm-padding-input-autocomplete: 2px !important;
+$bm-card-action-margin: 0px;
+$bm-placeholder-margin: 8px;
+$bm-handler-left-border: 5px;
+
+//Effect related variables. Tag: ef
+$ef-outline-accept: 1px dashed $cl-accept-drag !important;
+$ef-outline-section: 2px dashed $cl-outline-section !important;
+$ef-outline-field: 1px solid $cl-outline-section !important;
+$ef-outline-offset: -2px !important;

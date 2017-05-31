@@ -1,0 +1,42 @@
+<div
+    data-ng-repeat="partner in userData.partners track by partner.partnerId"
+    data-ng-click="!(partner.partnerId === userData.partner.partnerId) ? menu.changeBrand(partner.partnerId) : ''"
+    data-ng-disabled="partner.partnerId === userData.partner.partnerId"
+    class="brand-container bims-menu">
+    <span class="brand-name mdl-navigation__link">
+      {{::partner.name}}
+      <span data-ng-if="partner.partnerId === userData.partner.partnerId" class="brand-label">
+        ({{::menu.translations['actualBrand'] || item.label}})
+      </span>
+    </span>
+</div>
+<div class="bims-menu" data-ng-repeat="item in menu.navigationMenu">
+
+  <div
+    data-ng-init="item.param.param3 = item.param.param3 ? item.param.param3 : ''"
+    class="mdl-navigation__link"
+    data-ng-click="item.entity || item.isLocal ? '' : $event.preventDefault();"
+    data-ng-class="{'mdl-shadow--4dp': item.showSubItem && item.items && options.mode === 'side'}"
+    data-ui-sref='{{::item.state}}({{::item.param}})'>
+    <span class="enabled-menu-item">
+      {{::menu.translations[item.label] || item.label}}
+    </span>
+    <button
+      data-ng-if="::item.items"
+      href="#"
+      class="mdl-button mdl-js-button mdl-button--icon"
+      data-ng-click="menu.toggleSelect(item, $event);">
+      <i class="material-icons">{{::(item.showSubItem ? 'arrow_drop_down_circle' : 'arrow_drop_down')}}</i>
+    </button>
+  </div>
+  <div
+    data-navigation-menu="item.items"
+    data-options="options"
+    data-translations="menu.translations"
+    data-ng-show="item.showSubItem"
+    data-ng-if="::item.items"
+    class="slide"
+    data-ng-class="{'mdl-shadow--4dp': item.showSubItem && item.items && options.mode === 'dropdown'}">
+  </div>
+
+</div>

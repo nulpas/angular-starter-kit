@@ -1,0 +1,9 @@
+//# Color related variables. Tag: cl
+$cl-base-color-0: #005d6e;
+$degrees: -360deg;
+$cl-base-color-1: adjust-hue( $cl-base-color-0, $degrees/7);
+$cl-base-color-2: adjust-hue( $cl-base-color-1, $degrees/7);
+$cl-base-color-3: adjust-hue( $cl-base-color-2, $degrees/7);
+$cl-base-color-4: adjust-hue( $cl-base-color-3, $degrees/7);
+$cl-base-color-5: adjust-hue( $cl-base-color-4, $degrees/7);
+$cl-base-color-6: adjust-hue( $cl-base-color-5, $degrees/7);
