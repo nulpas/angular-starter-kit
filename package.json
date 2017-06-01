@@ -1,7 +1,7 @@
 {
   "name": "angular-starter-kit",
   "description": "Application Frontend seed",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "postinstall": "bower install && bower prune"
   },
   "dependencies": {
-    "gulp-starter-kit": "https://github.com/nulpas/gulp-starter-kit.git#0.7.1"
+    "gulp-starter-kit": "git+ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-compiler.git#0.7.1"
   },
   "devDependencies": {},
   "false": {}

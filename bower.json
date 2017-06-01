@@ -1,7 +1,7 @@
 {
   "name": "bca-ims-frontend",
   "description": "Application Frontend seed.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "homepage": "https://bims-dev.northeurope.cloudapp.azure.com",
   "repository": {
     "type": "git",
