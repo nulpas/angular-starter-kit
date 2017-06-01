@@ -17,7 +17,7 @@
     "postinstall": "bower install && bower prune"
   },
   "dependencies": {
-    "pollas": "https://github.com/nulpas/gulp-starter-kit.git#0.7.0"
+    "gulp-starter-kit": "https://github.com/nulpas/gulp-starter-kit.git#0.7.1"
   },
   "devDependencies": {},
   "false": {}
