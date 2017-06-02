@@ -3,27 +3,14 @@
 
   angular.module('app.login')
     .controller('loginController', [
-      'languageFactory',
-      '$api',
-      'login',
-      '$set',
-      function(languageFactory, $api, login, $set) {
-        login.logout();
-
+      function() {
         var vm = this;
         vm.user = null;
         vm.pass = null;
         vm.storeFlag = null;
-        vm.set = $set.getSetting('login');
-        vm.availableLanguages = languageFactory.getAvailableLanguages();
-        vm.language = languageFactory.getActualLocale();
-
-        vm.changeLanguage = function(locale) {
-          vm.language = languageFactory.setActualLocale(locale);
-        };
 
         vm.doLogin = function() {
-          login.login({
+          console.log({
             username: vm.user,
             password: vm.pass,
             expiration: vm.storeFlag

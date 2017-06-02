@@ -1,96 +1,8 @@
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header" data-ng-click="layout.resetMenu()">
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
   <!-- Header: menu + breadcrumb -->
   <header class="main-header mdl-layout__header mdl-color--black">
-    <div class="mdl-layout__header-row">
-
-      <img
-        data-ng-src="{{'images/corporate/' + layout.userData.partner.partnerId + '/' + layout.userData.partner.partnerId + '-logo.png'}}"
-        class="header__logo" alt="British Car Auction"
-        onerror="this.src='images/corporate/bca/bca-logo.png'">
-
-      <div class="bims-main-menu">
-        <div
-          class="mdl-navigation mdl-layout--large-screen-only"
-          data-navigation-menu="layout.menu"
-          data-translations="layout.translations"
-          data-options="{mode: 'dropdown'}">
-        </div>
-      </div>
-
-      <div class="mdl-layout-spacer"></div>
-
-      <div
-        id="global-search"
-        class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
-        <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp">
-          <i class="material-icons">search</i>
-        </label>
-        <div class="mdl-textfield__expandable-holder">
-          <input class="mdl-textfield__input" type="text" name="golblaSearch" id="fixed-header-drawer-exp">
-        </div>
-      </div>
-      <div class="mdl-tooltip mdl-tooltip--left" data-mdl-for="global-search">Global Search</div>
-
-      <div
-        id="version-info"
-        tabindex="1"
-        data-ng-focus="layout.switchVersionInfo(true)"
-        data-ng-blur="layout.switchVersionInfo(false)">
-        <i class="material-icons">info_outline</i>
-        <div class="version-info__container" data-ng-if="layout.displayVersionInfo">
-          <ul class="mdl-shadow--6dp">
-            <li data-ng-repeat="(versionKey, versionItem) in layout.versionInfo">
-              <span class="version-info__label">{{versionKey}}:</span>
-              <span class="version-info__content">{{versionItem}}</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="mdl-tooltip mdl-tooltip--left" data-mdl-for="version-info">Version Info</div>
-
-      <div id="profile" class="profile-div">
-        <button id="profile-menu-button" class="mdl-button mdl-js-button mdl-button--icon">
-          <i class="material-icons">person</i>
-        </button>
-        <ul
-          class="mdl-menu mdl-menu--bottom-right mdl-js-menu"
-          data-mdl-for="profile-menu-button"
-          data-profile-menu="layout.profileMenu"
-          data-init-data="layout.initUserData"
-          data-user-data="layout.userData">
-        </ul>
-      </div>
-      <div class="mdl-tooltip mdl-tooltip--left" data-mdl-for="profile">Profile Options</div>
-    </div>
-    <div data-breadcrumb class="mdl-layout__header-row mdl-color--grey-500 app-breadcrumb"></div>
+    <div class="mdl-layout__header-row">HEADER</div>
   </header>
-
-  <!-- Side menu -->
-  <div class="bims-sidenav mdl-layout__drawer">
-    <span class="mdl-layout-title">Brands</span>
-    <div
-        class="mdl-navigation"
-        data-navigation-menu=""
-        data-translations="layout.translations"
-        data-init-data="layout.initUserData"
-        data-user-data="layout.userData"
-        data-options="{mode: 'side'}">
-    </div>
-    <span class="mdl-layout-title">Profile Menu</span>
-    <div
-      class="mdl-navigation"
-      data-navigation-menu="layout.profileMenu"
-      data-translations="layout.translations"
-      data-options="{mode: 'side'}">
-    </div>
-    <span class="mdl-layout-title">Main Menu</span>
-    <div
-        class="mdl-navigation"
-        data-navigation-menu="layout.sideMenu"
-        data-translations="layout.translations"
-        data-options="{mode: 'side'}">
-    </div>
-  </div>
 
   <!-- Content -->
   <main
@@ -98,11 +10,5 @@
     class="mdl-layout__content"
     data-ng-class="layout.viewConfig.transitionEffectTo">
     <div class="page-content" data-ui-view="content"></div>
-    <div
-      id="advanced-search"
-      data-advanced-search
-      data-ng-show="layout.viewConfig.showAdvancedSearch"
-      class="mdl-shadow--4dp">
-    </div>
   </main>
 </div>

@@ -3,7 +3,7 @@
 
   angular.module('app', [
     //# BCA Framework Core
-    'bca.core',
+    'afs.core',
     //# External Modules
     //# App Modules
     'app.templateCache',
