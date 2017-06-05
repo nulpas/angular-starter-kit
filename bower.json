@@ -1,11 +1,11 @@
 {
   "name": "angular-starter-kit",
-  "description": "Application Frontend seed.",
-  "version": "0.3.5",
+  "description": "Application Frontend seed for Angular 1.x",
+  "version": "0.3.6",
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-front.git"
+    "url": "ssh://git@github.com:nulpas/angular-starter-kit.git"
   },
   "authors": [
     "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)",
@@ -19,7 +19,7 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular-starter-kit-core": "git+ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-front-core.git#^0.9.8"
+    "angular-starter-kit-core": "git+ssh://git@github.com:nulpas/angular-starter-kit-core.git#^0.9.10"
   },
   "devDependencies": {},
   "resolutions": {
@@ -36,12 +36,6 @@
       "main": [
         "dist/dragular.js",
         "dist/dragular.css"
-      ]
-    },
-    "adm-dtp": {
-      "main": [
-        "dist/ADM-dateTimePicker.js",
-        "dist/ADM-dateTimePicker.css"
       ]
     }
   }
