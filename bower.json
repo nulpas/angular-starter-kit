@@ -1,15 +1,15 @@
 {
-  "name": "bca-ims-frontend",
+  "name": "angular-starter-kit",
   "description": "Application Frontend seed.",
-  "version": "0.3.2",
-  "homepage": "https://bims-dev.northeurope.cloudapp.azure.com",
+  "version": "0.3.5",
+  "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nulpas/angular-stater-kit.git"
+    "url": "ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-front.git"
   },
   "authors": [
-    "Luis Murciano <luis.murciano.renedo@everis.com> (http://hd-2k8-ss02:7990/users/lmurcian)",
-    "Nul Pàs <manuel.pastor.lendinez.sa@everis.com> (http://hd-2k8-ss02:7990/users/mpastorl)"
+    "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)",
+    "Luis Murciano <luismurciano@gmail.com> (https://www.linkedin.com/in/luismurciano/)"
   ],
   "license": "MIT",
   "private": true,
@@ -19,7 +19,7 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular-starter-kit-core": "https://github.com/nulpas/angular-starter-kit-common.git"
+    "angular-starter-kit-core": "git+ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-front-core.git#^0.9.8"
   },
   "devDependencies": {},
   "resolutions": {

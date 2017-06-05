@@ -1,24 +1,24 @@
 {
   "name": "angular-starter-kit",
-  "description": "Application Frontend seed",
-  "version": "0.3.2",
+  "description": "Application Frontend seed.",
+  "version": "0.3.5",
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nulpas/angular-stater-kit.git"
+    "url": "ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-front.git"
   },
   "author": "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)",
   "contributors": [
-    "Luis Murciano <luis.murciano.renedo@everis.com> (https://www.linkedin.com/in/luismurciano/)"
+    "Luis Murciano <luismurciano@gmail.com> (https://www.linkedin.com/in/luismurciano/)"
   ],
   "license": "MIT",
   "private": true,
   "scripts": {
-    "postinstall": "bower install && bower prune"
+    "postinstall": "bower install && bower prune",
+    "build": "gulp deploy:dist"
   },
   "dependencies": {
     "gulp-starter-kit": "git+ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-compiler.git#0.7.1"
   },
-  "devDependencies": {},
-  "false": {}
+  "devDependencies": {}
 }

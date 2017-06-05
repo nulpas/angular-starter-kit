@@ -10,18 +10,10 @@
     '$alertProvider',
     '$locationProvider',
     '$urlRouterProvider',
-    '$translateProvider',
-    'localStorageServiceProvider'
+    '$translateProvider'
   ];
 
-  function appConfig(
-    $apiProvider,
-    $alertProvider,
-    $locationProvider,
-    $urlRouterProvider,
-    $translateProvider,
-    localStorageServiceProvider
-  ) {
+  function appConfig($apiProvider, $alertProvider, $locationProvider, $urlRouterProvider, $translateProvider) {
     /* Api Connector Config: */
     $apiProvider.setApiConfig({
       localJson: 'json',
@@ -40,8 +32,5 @@
     $translateProvider.setApiTranslationSource('labels');
     $translateProvider.setApiTranslationSections(['general', 'menus']);
     $translateProvider.setPreferredLanguage('en');
-
-    /* Angular Local Storage Config: */
-    localStorageServiceProvider.setStorageType('sessionStorage');
   }
 })();
