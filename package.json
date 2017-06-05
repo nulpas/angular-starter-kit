@@ -1,11 +1,11 @@
 {
   "name": "angular-starter-kit",
-  "description": "Application Frontend.",
-  "version": "0.3.5",
+  "description": "Application Frontend seed for Angular 1.x",
+  "version": "0.3.6",
   "homepage": "",
   "repository": {
     "type": "git",
-    "url": "ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-front.git"
+    "url": "ssh://git@github.com:nulpas/angular-starter-kit.git"
   },
   "author": "Nul Pàs <manu@lunaeme.com> (https://twitter.com/NulPas)",
   "contributors": [
@@ -18,7 +18,7 @@
     "build": "gulp deploy:dist"
   },
   "dependencies": {
-    "gulp-starter-kit": "git+ssh://git@gitlab.alm.gsnetcloud.corp:2220/seguros-vida/life-insurances-compiler.git#0.7.1"
+    "gulp-starter-kit": "git+ssh://git@github.com:nulpas/gulp-starter-kit.git#0.7.2"
   },
   "devDependencies": {}
 }
