@@ -7,9 +7,9 @@
      * @memberof app
      *
      * @description
-     * Definition of module "layout".
+     * Module Layout definition.
      */
     .module('app.layout', [
-      'app.dashboard'
+      'app.layout.dashboard'
     ]);
 })();

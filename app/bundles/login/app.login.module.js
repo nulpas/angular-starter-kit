@@ -7,7 +7,7 @@
      * @memberof app
      *
      * @description
-     * Definition of APP main module "login".
+     * Module Login definition.
      */
     .module('app.login', []);
 })();
