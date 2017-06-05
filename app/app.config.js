@@ -3,6 +3,19 @@
 
   angular
     .module('app')
+    /**
+     * @namespace appConfig
+     * @memberof app
+     *
+     * @requires $apiProvider
+     * @requires $alertProvider
+     * @requires $locationProvider
+     * @requires $urlRouterProvider
+     * @requires $translateProvider
+     *
+     * @description
+     * General config statement.
+     */
     .config(appConfig);
 
   appConfig.$inject = [
@@ -17,7 +30,7 @@
     /* Api Connector Config: */
     $apiProvider.setApiConfig({
       localJson: 'json',
-      apiBaseUrl: 'https://bims-dev.northeurope.cloudapp.azure.com/api'
+      apiBaseUrl: 'This should be an API URL. Needs to be defined.'
     });
 
     /* Toast Alert Config: */

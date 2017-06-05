@@ -1,10 +1,10 @@
 <div id="login-scope" class="mdl-layout mdl-js-layout">
   <main class="mdl-layout__content">
     <div id="login-scope__active" class="mdl-layout mdl-js-layout">
-      <form action="#">
+      <form data-ng-submit="login.doLogin()">
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" type="text" id="sample1">
-          <label class="mdl-textfield__label" for="sample1">Text...</label>
+          <input id="user" type="text" class="mdl-textfield__input" data-ng-model="login.user">
+          <label class="mdl-textfield__label" for="user">USER</label>
         </div>
       </form>
     </div>

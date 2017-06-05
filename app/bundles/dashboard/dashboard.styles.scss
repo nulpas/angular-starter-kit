@@ -1,62 +1,6 @@
-.dashboard-container {
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
-  .dashboard-title {
-    margin: 10px 0;
-    font-weight: bolder;
-    color: white;
-    text-transform: uppercase;
-    font-size: 20px;
-    background-color: #335f83;
-    padding: 10px;
-    flex-grow: 1;
-  }
-  .chart-wrapper {
-    display: flex;
-    justify-content: space-around;
+//# IMPORTS ####################################################
+@import '../../app.mixins';
+@import '../../app.variables';
+@import 'dashboard.variables';
 
-    .chart-container, .sla-container {
-      background-color: white;
-      height: 100%;
-      padding: 30px;
-      margin: 10px 0;
-      box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
-    }
-
-    .chart-container {
-      width: 45%;
-    }
-
-    .sla-container {
-      width: 35%;
-
-      .sla-title {
-        border-bottom: 1px solid black;
-        margin-bottom: 20px;
-      }
-
-      .sla-item {
-        display: flex;
-        justify-content: space-between;
-        margin: 5px 0;
-        padding: 0 10px;
-
-        &:hover{
-          background-color: rgba(142, 183, 224, 0.33);
-          transition: background-color, .3s;
-        }
-
-      }
-
-      .sla-url {
-        text-decoration: none;
-        color: #0277bb;
-
-        &:hover {
-          text-decoration: underline;
-        }
-      }
-    }
-  }
-}
+#dashboard-scope {}
