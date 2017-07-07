@@ -12,6 +12,7 @@ dist/
 # Visual Studio
 *.csproj
 *.csproj.user
+.vscode
 bin/
 obj/
 packages.config
@@ -80,3 +81,7 @@ Icon
 ._*
 .Spotlight-V100
 .Trashes
+
+# -- Others -----------------------------------------
+# Sonar
+.scannerwork

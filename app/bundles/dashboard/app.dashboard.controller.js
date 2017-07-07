@@ -4,15 +4,15 @@
   angular
     .module('app.layout.dashboard')
     /**
-     * @namespace dashboardController
+     * @namespace DashboardController
      * @memberof app.layout.dashboard
      *
      * @description
      * Dashboard page controller definition.
      */
-    .controller('dashboardController', dashboardController);
+    .controller('DashboardController', DashboardController);
 
-  function dashboardController() {
+  function DashboardController() {
     /* CONTROLLER CODE */
   }
 })();
