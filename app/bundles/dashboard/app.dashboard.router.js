@@ -23,7 +23,8 @@
         views: {
           'content@app': {
             templateUrl: 'bundles/dashboard/app.dashboard.view.tpl.html',
-            controller: 'dashboardController as dashboard'
+            controller: 'dashboardController',
+            controllerAs: 'dashboard'
           }
         }
       });

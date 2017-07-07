@@ -1,7 +1,7 @@
 {
   "name": "angular-starter-kit",
   "description": "Application Frontend seed for Angular 1.x",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "homepage": "",
   "repository": {
     "type": "git",
@@ -19,7 +19,7 @@
     "bower_components"
   ],
   "dependencies": {
-    "angular-starter-kit-core": "git+ssh://git@github.com/nulpas/angular-starter-kit-core.git#^0.9.13"
+    "angular-toolpas": "^0.9.16"
   },
   "devDependencies": {},
   "resolutions": {
@@ -30,6 +30,13 @@
       "main": [
         "material.js",
         "material.css"
+      ]
+    },
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap-theme.css"
       ]
     },
     "dragular": {

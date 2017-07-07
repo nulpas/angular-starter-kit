@@ -4,7 +4,7 @@
   angular
     .module('app.login')
     /**
-     * @namespace loginController
+     * @namespace LoginController
      * @memberof app.login
      *
      * @requires $state
@@ -12,11 +12,11 @@
      * @description
      * Main controller for Login Module.
      */
-    .controller('loginController', loginController);
+    .controller('LoginController', LoginController);
 
-  loginController.$inject = ['$state'];
+  LoginController.$inject = ['$state'];
 
-  function loginController($state) {
+  function LoginController($state) {
     /* jshint validthis: true */
     var vm = this;
     vm.user = null;
@@ -26,10 +26,11 @@
 
     /**
      * @name doLogin
-     * @memberof app.login.loginController
+     * @memberof app.login.LoginController
      *
      * @description
-     * Mock for activation login functionality. This function must be defined into a service.
+     * Mock for activation login functionality.
+     * This function must be defined into a service.
      */
     function doLogin() {
       $state.go('app.home');

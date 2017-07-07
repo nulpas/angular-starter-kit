@@ -4,15 +4,15 @@
   angular
     .module('app.layout')
     /**
-     * @namespace layoutController
+     * @namespace LayoutController
      * @memberof app.layout
      *
      * @description
      * Layout wrap controller definition.
      */
-    .controller('layoutController', layoutController);
+    .controller('LayoutController', LayoutController);
 
-  function layoutController() {
+  function LayoutController() {
     /* CONTROLLER CODE */
   }
 })();
